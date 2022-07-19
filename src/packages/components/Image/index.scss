@@ -1,0 +1,17 @@
+.x-image__empty {
+  border: 1px solid #f0f0f0;
+  padding: 10px;
+  display: inline-block;
+
+  .ant-empty-normal {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+
+    .ant-empty-description {
+      margin-bottom: 0;
+    }
+  }
+}

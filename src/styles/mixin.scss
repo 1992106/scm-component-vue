@@ -1,0 +1,67 @@
+@mixin flex {
+  display: flex;
+}
+
+@mixin flex-row {
+  @include flex;
+
+  flex-direction: row;
+}
+
+@mixin flex-column {
+  @include flex;
+
+  flex-direction: column;
+}
+
+@mixin flexRAC {
+  @include flex-row;
+
+  align-items: center;
+}
+
+@mixin flexRJC {
+  @include flex-row;
+
+  justify-content: center;
+}
+
+@mixin flexRCC {
+  @include flexRAC;
+
+  justify-content: center;
+}
+
+@mixin flexCAC {
+  @include flex-column;
+
+  align-items: center;
+}
+
+@mixin flexCJC {
+  @include flex-column;
+
+  justify-content: center;
+}
+
+@mixin flexCCC {
+  @include flexCAC;
+
+  justify-content: center;
+}
+
+// 文本溢出显示省略号
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本溢出显示省略号
+@mixin multi-ellipsis($num: 2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: box;
+  -webkit-line-clamp: $num;
+  box-orient: vertical;
+}

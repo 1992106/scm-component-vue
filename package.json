@@ -1,0 +1,143 @@
+{
+  "name": "scm-component-vue",
+  "version": "0.0.1",
+  "main": "dist/scm-component-vue.umd.js",
+  "module": "dist/scm-component-vue.es.js",
+  "unpkg": "dist/scm-component-vue.umd.js",
+  "browser": "dist/scm-component-vue.umd.js",
+  "files": [
+    "dist/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/scm-component-vue.es.js",
+      "require": "./dist/scm-component-vue.cjs.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "dev": "vite --force --host 0.0.0.0",
+    "build": "vue-tsc && vite build",
+    "build:lib": "vue-tsc && vite build --mode lib --debug",
+    "preview": "vite preview",
+    "lint": "npm run lint:eslint && npm run lint:stylelint",
+    "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx,.vue --fix",
+    "lint:stylelint": "stylelint src/**/*.{css,scss,sass,less,vue} --fix",
+    "prettier": "prettier --write .",
+    "cz": "git cz",
+    "reinstall": "rimraf yarn.lock && rimraf package-lock.json && rimraf node_modules && yarn"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
+    "@vueup/vue-quill": "^1.0.0-beta.9",
+    "ant-design-vue": "^3.2.10",
+    "axios": "^0.27.2",
+    "dayjs": "^1.11.3",
+    "echarts": "^5.3.3",
+    "html2canvas": "^1.4.1",
+    "jsbarcode": "^3.11.5",
+    "jspdf": "^2.5.1",
+    "lodash-es": "^4.17.21",
+    "nprogress": "^0.2.0",
+    "qrcodejs2-fix": "^0.0.1",
+    "vue": "^3.2.37",
+    "vue-draggable-next": "^2.1.1",
+    "vue-router": "^4.1.2",
+    "vuex": "^4.0.2",
+    "vxe-table": "^4.2.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@types/lodash-es": "^4.17.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "@vitejs/plugin-legacy": "^2.0.0",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "@vitejs/plugin-vue-jsx": "^2.0.0",
+    "@vue/compiler-sfc": "^3.2.37",
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^9.1.1",
+    "husky": "^8.0.1",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "lint-staged": "^13.0.1",
+    "prettier": "^2.7.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.52.3",
+    "sass-loader": "^12.6.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard": "^22.0.0",
+    "typescript": "^4.7.4",
+    "unplugin-vue-components": "^0.21.1",
+    "vite": "^3.0.2",
+    "vite-plugin-html": "^2.1.2",
+    "vue-eslint-parser": "^9.0.3",
+    "vue-tsc": "^0.38.8",
+    "vxe-table-plugin-antd": "^3.0.5",
+    "xe-ajax": "^4.0.5",
+    "xe-utils": "^3.5.4"
+  },
+  "peerDependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
+    "@vueup/vue-quill": "^1.0.0-beta.9",
+    "ant-design-vue": "^3.2.10",
+    "dayjs": "^1.11.3",
+    "echarts": "^5.3.3",
+    "html2canvas": "^1.4.1",
+    "jsbarcode": "^3.11.5",
+    "jspdf": "^2.5.1",
+    "lodash-es": "^4.17.21",
+    "qrcodejs2-fix": "^0.0.1",
+    "vue": "^3.2.37",
+    "vue-draggable-next": "^2.1.1",
+    "vxe-table": "^4.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:1992106/scm-component-vue.git"
+  },
+  "homepage": "https://github.com/1992106/scm-component-vue",
+  "keywords": [
+    "vue3",
+    "vite",
+    "scm-component"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1992106/scm-component-vue/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx,vue}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{css,scss,sass,less.vue}": [
+      "prettier --write",
+      "stylelint --fix",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
