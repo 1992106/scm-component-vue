@@ -28,6 +28,7 @@
           :total="total"
           :emptyText="emptyText"
           @select="handleSelect"
+          @select-all="handleSelectAll"
           @search="handleSearch">
           <template #bodyCell="scope">
             <slot name="materialRender" v-bind="scope"></slot>
@@ -149,6 +150,14 @@ export default defineComponent({
       }
     }
 
+    const handleSelectAll = (selected, _, changeRows) => {
+      if (props.selectedType === 'checkbox') {
+        changeRows.forEach(item => {
+          handleCheckbox(item, selected)
+        })
+      }
+    }
+
     const handleCheckbox = (record, selected) => {
       // 选中
       if (selected) {
@@ -223,6 +232,7 @@ export default defineComponent({
       ...toRefs(state),
       modalVisible,
       handleSelect,
+      handleSelectAll,
       handleSearch,
       handleReset,
       handleDel,

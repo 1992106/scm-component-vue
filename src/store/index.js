@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 // 加载所有模块。
 function loadModules() {
-  const context = import.meta.globEager('./modules/*.js')
+  const context = import.meta.glob('./modules/*.js', { eager: true })
   const modules = Object.keys(context)
     .map(key => ({
       key,

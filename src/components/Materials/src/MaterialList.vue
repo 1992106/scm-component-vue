@@ -1,5 +1,10 @@
 <template>
-  <x-table v-bind="tableProps" v-model:pagination="pages" v-model:selectedValue="selectedList" @select="handleSelect">
+  <x-table
+    v-bind="tableProps"
+    v-model:pagination="pages"
+    v-model:selectedValue="selectedList"
+    @select="handleSelect"
+    @select-all="handleSelectAll">
     <template #bodyCell="{ text, record, index, column }">
       <slot name="bodyCell" v-bind="{ text, record, index, column }">
         <template v-if="column?.dataIndex === 'thumbnail'">
@@ -20,7 +25,6 @@
 <script lang="jsx">
 import { computed, defineComponent, reactive, watch } from 'vue'
 import { XTable, XImage } from 'scm-ui-vue'
-
 export default defineComponent({
   name: 'MaterialList',
   components: {
@@ -37,7 +41,7 @@ export default defineComponent({
     pagination: Object,
     emptyText: String
   },
-  emits: ['update:pagination', 'update:selectedValue', 'search', 'select'],
+  emits: ['update:pagination', 'update:selectedValue', 'search', 'select', 'select-all'],
   setup(props, { emit }) {
     const defaultColumns = [
       {
@@ -163,11 +167,16 @@ export default defineComponent({
       emit('select', record, selected, selectedRows, nativeEvent)
     }
 
+    const handleSelectAll = (selected, selectedRows, changeRows) => {
+      emit('select-all', selected, selectedRows, changeRows)
+    }
+
     return {
       pages,
       selectedList,
       tableProps,
-      handleSelect
+      handleSelect,
+      handleSelectAll
     }
   }
 })
