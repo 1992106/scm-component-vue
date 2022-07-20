@@ -20,7 +20,7 @@
           <a-checkbox v-model:checked="record.checked" @change="change($event.target.checked, record)">
             {{ index }}
           </a-checkbox>
-          <XImage width="100%" :urls="record?.urls"></XImage>
+          <x-image width="100%" :urls="record?.urls"></x-image>
           <div class="info">
             <p class="line">
               <span>BX2022001</span>
@@ -54,14 +54,12 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, onActivated, onMounted, onUnmounted, reactive } from 'vue'
-import XImage from '@packages/components/Image'
-import Versions from '@packages/Versions'
-import Materials from '@packages/Materials'
-import { XBatchImportTraceability, XEditTraceability } from '@packages/Traceability'
+import Versions from '@components/Versions'
+import Materials from '@components/Materials'
+import { XBatchImportTraceability, XEditTraceability } from '@components/Traceability'
 export default defineComponent({
   name: 'Example',
   components: {
-    XImage,
     Versions,
     Materials,
     BatchImportTraceability: XBatchImportTraceability,

@@ -3,7 +3,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { Menu, Dropdown, Avatar, Modal, notification, Space } from 'ant-design-vue'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import XDownloads from '@packages/Downloads'
+import XDownloads from '@components/Downloads'
 import setting from '@src/config'
 import styles from './index.module.scss'
 

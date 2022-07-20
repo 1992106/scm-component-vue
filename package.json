@@ -1,8 +1,8 @@
 {
   "name": "scm-component-vue",
-  "version": "0.0.1",
-  "main": "dist/scm-component-vue.umd.js",
-  "module": "dist/scm-component-vue.es.js",
+  "version": "0.0.1-beta1",
+  "main": "dist/scm-component-vue.js",
+  "module": "dist/scm-component-vue.mjs",
   "unpkg": "dist/scm-component-vue.umd.js",
   "browser": "dist/scm-component-vue.umd.js",
   "files": [
@@ -10,8 +10,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/scm-component-vue.es.js",
-      "require": "./dist/scm-component-vue.cjs.js"
+      "import": "./dist/scm-component-vue.mjs",
+      "require": "./dist/scm-component-vue.js"
     },
     "./dist/style.css": "./dist/style.css"
   },
@@ -40,11 +40,10 @@
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "qrcodejs2-fix": "^0.0.1",
+    "scm-ui-vue": "^0.0.10-beta1",
     "vue": "^3.2.37",
-    "vue-draggable-next": "^2.1.1",
     "vue-router": "^4.1.2",
-    "vuex": "^4.0.2",
-    "vxe-table": "^4.2.3"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
@@ -78,10 +77,7 @@
     "vite": "^3.0.2",
     "vite-plugin-html": "^2.1.2",
     "vue-eslint-parser": "^9.0.3",
-    "vue-tsc": "^0.38.8",
-    "vxe-table-plugin-antd": "^3.0.5",
-    "xe-ajax": "^4.0.5",
-    "xe-utils": "^3.5.4"
+    "vue-tsc": "^0.38.8"
   },
   "peerDependencies": {
     "@ant-design/icons-vue": "^6.1.0",
@@ -94,9 +90,8 @@
     "jspdf": "^2.5.1",
     "lodash-es": "^4.17.21",
     "qrcodejs2-fix": "^0.0.1",
-    "vue": "^3.2.37",
-    "vue-draggable-next": "^2.1.1",
-    "vxe-table": "^4.2.3"
+    "scm-ui-vue": "^0.0.10-beta1",
+    "vue": "^3.2.37"
   },
   "repository": {
     "type": "git",

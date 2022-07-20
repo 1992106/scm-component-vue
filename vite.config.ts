@@ -35,7 +35,6 @@ const config: UserConfigExport = {
     alias: [
       { find: /^@src/, replacement: pathResolve('src') },
       { find: /^@components/, replacement: pathResolve('src/components') },
-      { find: /^@packages/, replacement: pathResolve('src/packages') },
       { find: /^@views/, replacement: pathResolve('src/views') },
       { find: /^@hooks/, replacement: pathResolve('src/hooks') },
       { find: /^@utils/, replacement: pathResolve('src/utils') }
@@ -98,6 +97,7 @@ export default ({ mode }) => {
           'vue-draggable-next': 'vue-draggable-next',
           dayjs: 'dayjs',
           'lodash-es': 'lodash-es',
+          'scm-ui-vue': 'scm-ui-vue',
           '@vueup/vue-quill': '@vueup/vue-quill',
           echarts: 'echarts',
           html2canvas: 'html2canvas',
@@ -116,7 +116,8 @@ export default ({ mode }) => {
         'vxe-table',
         'vue-draggable-next',
         'dayjs',
-        'lodash-es'
+        'lodash-es',
+        'scm-ui-vue'
       ]
     }
   }
