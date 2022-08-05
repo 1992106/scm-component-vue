@@ -4171,10 +4171,10 @@ sax@^1.2.4:
   resolved "https://registry.npmjs.org/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scm-ui-vue@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.11.tgz#f387cbd5a8b67a50164f9a81fb6e00449680840d"
-  integrity sha512-5iPFcLBtlRQ7EyfqSr0UZWo23L4VmfzUV35HzZLNcO7jOEuFpadu+iYSFXGqr9jG4IgWnfytu96XvPDsk+C2Yw==
+scm-ui-vue@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.14.tgz#256aa26431111f64096d0f475728307934f5e3ee"
+  integrity sha512-RvEjQCGku0SFqzv/Y+jJ6rbI4hbgK4q6fAXQp37nCZljXs/QkrLx4vrD0IMzP4F1ORqfOFEbabIvmGbwysjWNw==
   dependencies:
     "@ant-design/icons-vue" "^6.1.0"
     ant-design-vue "^3.2.10"
@@ -4186,7 +4186,7 @@ scm-ui-vue@^0.0.11:
     vue-draggable-next "^2.1.1"
     vue-router "^4.1.2"
     vuex "^4.0.2"
-    vxe-table "4.2.3"
+    vxe-table "4.2.6"
 
 scroll-into-view-if-needed@^2.2.25:
   version "2.2.29"
@@ -4889,10 +4889,10 @@ vuex@^4.0.2:
   dependencies:
     "@vue/devtools-api" "^6.0.0-beta.11"
 
-vxe-table@4.2.3:
-  version "4.2.3"
-  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.2.3.tgz#48e8cc26e5492f35522e218f064760e1a02d60a0"
-  integrity sha512-sbW9yZ763/ArOpJXRyBJwPKShU0za4lq5WJYdzF+O73yqdhmSUJ/cFuf3E/JJ/DxD/rk3BdV7/jDaFR6YBDyIQ==
+vxe-table@4.2.6:
+  version "4.2.6"
+  resolved "https://registry.npmjs.org/vxe-table/-/vxe-table-4.2.6.tgz#26ffb4f608d6e1ce752a9ad2578fb72fb6e63591"
+  integrity sha512-hxjwJIanUn9KWU0+twHQ12YHZhjrWLTFwJos8m2RSrA9YV3UfHg15dmQYSsvDE9/x5NDDCoDOxpQi/dhp7aZvQ==
 
 warning@^4.0.0:
   version "4.0.3"
