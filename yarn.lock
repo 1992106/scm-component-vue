@@ -1049,6 +1049,29 @@ ant-design-vue@^3.2.10:
     vue-types "^3.0.0"
     warning "^4.0.0"
 
+ant-design-vue@^3.2.11:
+  version "3.2.11"
+  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-3.2.11.tgz#034b2a2adef82a34440c10b90a5e02bcd25b376b"
+  integrity sha512-QKCAcOY5EJF0PepiVGA4X5PzUetYUvG5qALmA+2TON40pc2+brOEiVTwr3kjF9N+f7q4MpyiLPu4pIErwoajOQ==
+  dependencies:
+    "@ant-design/colors" "^6.0.0"
+    "@ant-design/icons-vue" "^6.1.0"
+    "@babel/runtime" "^7.10.5"
+    "@ctrl/tinycolor" "^3.4.0"
+    "@simonwep/pickr" "~1.8.0"
+    array-tree-filter "^2.1.0"
+    async-validator "^4.0.0"
+    dayjs "^1.10.5"
+    dom-align "^1.12.1"
+    dom-scroll-into-view "^2.0.0"
+    lodash "^4.17.21"
+    lodash-es "^4.17.15"
+    resize-observer-polyfill "^1.5.1"
+    scroll-into-view-if-needed "^2.2.25"
+    shallow-equal "^1.0.0"
+    vue-types "^3.0.0"
+    warning "^4.0.0"
+
 anymatch@~3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/anymatch/-/anymatch-3.1.2.tgz#c0557c096af32f106198f4f4e2a383537e378716"
@@ -4171,10 +4194,10 @@ sax@^1.2.4:
   resolved "https://registry.npmjs.org/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scm-ui-vue@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.14.tgz#256aa26431111f64096d0f475728307934f5e3ee"
-  integrity sha512-RvEjQCGku0SFqzv/Y+jJ6rbI4hbgK4q6fAXQp37nCZljXs/QkrLx4vrD0IMzP4F1ORqfOFEbabIvmGbwysjWNw==
+scm-ui-vue@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.15.tgz#4371db968d372ea3571d1beb5ced157b23102546"
+  integrity sha512-9ai69TVLQ+LKIIwsG5OClHlrnTXizTwbysB5y0vAfA0o8CnBPa+ZnAX2fKsOFWqhs2j4xonckFJLjed7fjv7GQ==
   dependencies:
     "@ant-design/icons-vue" "^6.1.0"
     ant-design-vue "^3.2.10"
@@ -4820,10 +4843,10 @@ vite-plugin-html@^2.1.2:
     fs-extra "^10.0.0"
     html-minifier-terser "^6.1.0"
 
-vite@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/vite/-/vite-3.0.2.tgz#2a7b4642c53ae066cf724e7e581d6c1fd24e2c32"
-  integrity sha512-TAqydxW/w0U5AoL5AsD9DApTvGb2iNbGs3sN4u2VdT1GFkQVUfgUldt+t08TZgi23uIauh1TUOQJALduo9GXqw==
+vite@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.npmjs.org/vite/-/vite-3.0.4.tgz#c61688d6b97573e96cf5ac25f2d68597b5ce68e8"
+  integrity sha512-NU304nqnBeOx2MkQnskBQxVsa0pRAH5FphokTGmyy8M3oxbvw7qAXts2GORxs+h/2vKsD+osMhZ7An6yK6F1dA==
   dependencies:
     esbuild "^0.14.47"
     postcss "^8.4.14"
