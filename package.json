@@ -1,6 +1,6 @@
 {
   "name": "scm-component-vue",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/scm-component-vue.js",
   "module": "dist/scm-component-vue.mjs",
   "unpkg": "dist/scm-component-vue.umd.js",
@@ -40,7 +40,7 @@
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "qrcodejs2-fix": "^0.0.1",
-    "scm-ui-vue": "^0.0.15",
+    "scm-ui-vue": "^0.0.16",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2",
     "vuex": "^4.0.2"
