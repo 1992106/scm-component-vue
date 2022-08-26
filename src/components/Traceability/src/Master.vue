@@ -17,6 +17,9 @@
           v-bind="{ text, record, index, column }"
           :onUpdate="() => handleChange('material')">
           <template v-if="mode === 'view'">
+            <template v-if="column?.dataIndex === 'fabricType'">
+              <span>{{ record?.fabricTypeDesc || '--' }}</span>
+            </template>
             <template v-if="column?.dataIndex === 'materialSupplierCode'">
               <span>{{ record?.materialSupplierName || '--' }}</span>
             </template>
@@ -128,6 +131,14 @@ export default defineComponent({
 
     const defaultMaterialColumns = [
       { title: '物料名称', width: 160, dataIndex: 'materialName', ellipsis: true, type: 'AInput', required: true },
+      {
+        title: '针织/梭织',
+        width: 120,
+        dataIndex: 'fabricType',
+        ellipsis: true,
+        type: 'ASelect',
+        required: true
+      },
       {
         title: '面料供应商',
         width: 180,

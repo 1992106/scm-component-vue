@@ -50,7 +50,16 @@
             v-bind="{ text, record, index, column }"
             :onDelete="handleDel"
             :onUpdate="() => handleChange(record)">
-            <template v-if="mode !== 'view' && (master === 'view' ? record?.itemId == null : true)">
+            <template
+              v-if="
+                mode !== 'view' &&
+                (master !== 'view'
+                  ? true
+                  : record?.itemId == null
+                  ? true
+                  : ['greyClothWeight', 'greyClothLength'].includes(column.dataIndex))
+              ">
+              <!--导入明细时：色布/色纱重量(KG)和'色布米数(M)允许编辑-->
               <template v-if="column?.type === 'AInput'">
                 <a-input
                   v-model:value="record[column.dataIndex]"
