@@ -4171,10 +4171,10 @@ sax@^1.2.4:
   resolved "https://registry.npmjs.org/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scm-ui-vue@^0.0.16:
-  version "0.0.16"
-  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.16.tgz#dbfc30493c836c387eb32199ad3c34fa03f49611"
-  integrity sha512-ta1UzRZj20LuOnsgq1n3IWSvy3CDN9hKEJrfMTEijvD5dWHInhn2EPCf1ejLM/HXFMFmdpuBhpbFmyfIoPBGOA==
+scm-ui-vue@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/scm-ui-vue/-/scm-ui-vue-0.0.20.tgz#6fa9379ce7b6e9c80ca2892728afecee8e41d4b5"
+  integrity sha512-Q7ZkBpkdxqJ6wXiEIhpPLlim0T+SXdiVen9Do28ZQIlhaHBkllHB8k03bwwFaLRzlszOGNNq6hLkLq66DUClEw==
   dependencies:
     "@ant-design/icons-vue" "^6.1.0"
     ant-design-vue "^3.2.11"
