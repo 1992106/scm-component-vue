@@ -2,6 +2,7 @@
 import XTraceability from './src/index.vue'
 import XBatchImportTraceability from './src/BatchImportTraceability.vue'
 import XBatchImportDetail from './src/BatchImportDetail.vue'
+import XCopyTraceability from './src/CopyTraceability.vue'
 import XEditTraceability from './src/EditTraceability.vue'
 import XAuditTraceability from './src/AuditTraceability.vue'
 import XViewTraceability from './src/ViewTraceability.vue'
@@ -16,6 +17,9 @@ XBatchImportTraceability.install = function (app) {
 XBatchImportDetail.install = function (app) {
   app.component(XBatchImportDetail.name, XBatchImportDetail)
 }
+XCopyTraceability.install = function (app) {
+  app.component(XCopyTraceability.name, XCopyTraceability)
+}
 XEditTraceability.install = function (app) {
   app.component(XEditTraceability.name, XEditTraceability)
 }
@@ -28,4 +32,11 @@ XViewTraceability.install = function (app) {
 
 // 默认导出组件
 export default XTraceability
-export { XBatchImportTraceability, XBatchImportDetail, XEditTraceability, XAuditTraceability, XViewTraceability }
+export {
+  XBatchImportTraceability,
+  XBatchImportDetail,
+  XCopyTraceability,
+  XEditTraceability,
+  XAuditTraceability,
+  XViewTraceability
+}

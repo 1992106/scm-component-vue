@@ -17,6 +17,7 @@ export {
   default as XTraceability,
   XBatchImportTraceability,
   XBatchImportDetail,
+  XCopyTraceability,
   XEditTraceability,
   XAuditTraceability,
   XViewTraceability
