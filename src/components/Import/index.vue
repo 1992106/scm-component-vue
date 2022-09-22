@@ -7,8 +7,8 @@
       :title="title"
       :width="width"
       :spin-props="spinning"
-      destroy-on-close
       :footer="null"
+      destroy-on-close
       @cancel="handleCancel">
       <div>
         一、请按照数据模式的格式准备导入数据，模版中的表头名称不可更改及删除，每次限制导入

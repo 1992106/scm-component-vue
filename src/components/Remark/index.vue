@@ -6,9 +6,9 @@
       class="x-remark__dialog"
       :title="title"
       :width="width"
-      destroy-on-close
       :spin-props="spinning"
       :confirm-loading="confirmLoading"
+      destroy-on-close
       @ok="handleOk"
       @cancel="handleCancel">
       <x-table
