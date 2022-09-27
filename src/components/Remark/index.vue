@@ -86,10 +86,10 @@ export default defineComponent({
   props: {
     title: { type: String, default: '备注' },
     width: { type: [String, Number], default: 960 },
+    visible: { type: Boolean, default: false },
     rowKey: { type: [String, Function], default: 'id' },
     scrollY: { type: [String, Number], default: 360 },
     maxlength: { type: Number, default: 200 },
-    visible: { type: Boolean, default: false },
     customRequest: { type: Function, require: true },
     customSubmit: { type: Function },
     customUpload: { type: Function },
