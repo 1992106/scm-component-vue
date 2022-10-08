@@ -233,10 +233,11 @@ export default defineComponent({
       validate()
         .then(async () => {
           state.confirmLoading = true
+          const attachments = modelRef.attachments.filter(val => val.status === 'done')
           await execRequest(
             customSubmit({
               content: modelRef.content,
-              ...(!isEmpty(modelRef.attachments) ? { ids: modelRef.attachments.map(val => val?.id) } : {})
+              ...(!isEmpty(attachments) ? { ids: attachments.map(val => val?.uid) } : {})
             }),
             {
               success: ({ data }) => {
@@ -256,6 +257,8 @@ export default defineComponent({
 
     const handleCancel = () => {
       resetFields()
+      tableOptions.dataSource = []
+      tableOptions.total = 0
       emit('update:visible', false)
     }
 

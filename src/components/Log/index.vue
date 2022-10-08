@@ -136,6 +136,8 @@ export default defineComponent({
     }
 
     const handleCancel = () => {
+      state.data = []
+      state.total = 0
       emit('update:visible', false)
     }
 
