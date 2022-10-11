@@ -26,8 +26,20 @@ export default defineComponent({
     showButton: { type: Boolean, default: true },
     buttonText: { type: String, default: '导出' },
     buttonProps: { type: Object },
+    mode: {
+      validator(value) {
+        return ['download', 'print'].includes(value)
+      },
+      default: 'download'
+    },
     // 导出文件类型
-    fileType: { type: String, default: 'pdf' }, // 支持pdf和excel导出
+    fileType: {
+      validator(value) {
+        // 支持pdf和excel导出
+        return ['pdf', 'excel'].includes(value)
+      },
+      default: 'pdf'
+    },
     // 导出文件名
     fileName: { type: String, default: '' },
     // 延迟时间
@@ -68,8 +80,8 @@ export default defineComponent({
       }
     }
 
-    const handleDone = () => {
-      emit('done')
+    const handleDone = event => {
+      emit('done', event)
     }
 
     // 导出PDF
@@ -78,7 +90,8 @@ export default defineComponent({
         jsPDF({
           el: elExport.value,
           fileName: props.fileName,
-          handleDone
+          mode: props.mode,
+          callback: handleDone
         })
       }, props.delay)
     }

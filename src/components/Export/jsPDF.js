@@ -1,7 +1,8 @@
 import JsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import { toBlob } from './utils'
 
-const jsPDF = ({ el, fileName, handleDone }) => {
+const jsPDF = ({ el, fileName, mode, callback }) => {
   el.style.paddingLeft = '20px'
   el.style.paddingRight = '20px'
   html2canvas(el, {
@@ -50,11 +51,18 @@ const jsPDF = ({ el, fileName, handleDone }) => {
         }
       }
     }
-    pdf.save(fileName)
-    // 完成回调
-    if (handleDone) {
-      handleDone()
+    // 下载
+    if (mode === 'download') {
+      pdf.save(fileName)
     }
+    // 打印
+    if (mode === 'print') {
+      const link = window.URL.createObjectURL(toBlob(pdf.output('datauristring')))
+      const myWindow = window.open(link)
+      myWindow.print()
+    }
+    // 完成回调
+    callback && callback(pdf)
   })
 }
 
