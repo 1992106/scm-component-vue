@@ -50,7 +50,7 @@ export default defineComponent({
     onBefore: { type: Function, default: null }
   },
   emits: ['done'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const elPrint = ref(null)
     const result = ref(null)
 
@@ -90,11 +90,14 @@ export default defineComponent({
       handlePrint()
     }
 
+    expose({
+      onPrint
+    })
+
     return {
       elPrint,
       result,
-      handlePrint,
-      onPrint
+      handlePrint
     }
   }
 })

@@ -58,7 +58,7 @@ export default defineComponent({
     emptyText: { type: String, default: '暂无数据' }
   },
   emits: ['update:visible', 'toggle'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const popoverVisible = computed({
       get: () => {
         return props.visible
@@ -114,6 +114,8 @@ export default defineComponent({
       })
       state.spinning = false
     }
+
+    expose({})
 
     return {
       ...toRefs(state),

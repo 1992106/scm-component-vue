@@ -36,7 +36,7 @@ export default defineComponent({
     onBefore: { type: Function }
   },
   emits: ['done'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const elExport = ref(null)
     const result = ref(null)
 
@@ -57,10 +57,6 @@ export default defineComponent({
       }
     }
 
-    const handleDone = () => {
-      emit('done')
-    }
-
     const dispatch = () => {
       switch (props.fileType) {
         case 'pdf':
@@ -69,9 +65,11 @@ export default defineComponent({
         case 'excel':
           exportExcel()
           break
-        default:
-          exportPDF()
       }
+    }
+
+    const handleDone = () => {
+      emit('done')
     }
 
     // 导出PDF
@@ -95,11 +93,14 @@ export default defineComponent({
       handleExport()
     }
 
+    expose({
+      onExport
+    })
+
     return {
       elExport,
       result,
-      handleExport,
-      onExport
+      handleExport
     }
   }
 })

@@ -70,7 +70,7 @@ export default defineComponent({
     emptyText: { type: String, default: '暂无数据' }
   },
   emits: ['update:visible', 'done'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const state = reactive({
       modalVisible: props.visible,
       spinning: false,
@@ -140,6 +140,8 @@ export default defineComponent({
       state.total = 0
       emit('update:visible', false)
     }
+
+    expose({})
 
     return {
       zhCn,

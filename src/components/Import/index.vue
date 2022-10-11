@@ -68,7 +68,7 @@ export default defineComponent({
     extra: { type: String }
   },
   emits: ['update:visible', 'done'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const state = reactive({
       modalVisible: props.visible,
       spinning: false,
@@ -110,6 +110,8 @@ export default defineComponent({
     const handleCancel = () => {
       emit('update:visible', false)
     }
+
+    expose({})
 
     return {
       zhCn,
