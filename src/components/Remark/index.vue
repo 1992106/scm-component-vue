@@ -18,10 +18,13 @@
         :showPagination="showPagination"
         :paginationConfig="paginationConfig"
         @search="handleRequest">
-        <template #bodyCell="{ column, record: { attachments } }">
-          <template v-if="column.dataIndex === 'attachments'">
-            <template v-if="attachments.length">
-              <template v-if="attachments[0]?.fileName">
+        <template #bodyCell="{ column, record: { files, attachments, images } }">
+          <template v-if="column.dataIndex === 'files'">
+            <template v-if="files.length">
+              <template v-if="images.length">
+                <x-image :width="50" :height="50" :thumbnail="images[0]?.thumbUrl" :urls="images"></x-image>
+              </template>
+              <template v-if="attachments.length">
                 <a-space>
                   <a-button
                     v-for="(file, index) in attachments"
@@ -32,12 +35,9 @@
                   </a-button>
                 </a-space>
               </template>
-              <template v-else>
-                <x-image :width="50" :height="50" :thumbnail="attachments[0]?.thumbUrl" :urls="attachments"></x-image>
-              </template>
             </template>
-            <template v-else>--</template>
           </template>
+          <template v-else>--</template>
         </template>
       </x-table>
       <a-form :label-col="{ span: 0 }">
@@ -51,7 +51,7 @@
         </a-form-item>
         <a-form-item>
           <x-upload
-            v-model:file-list="modelRef.attachments"
+            v-model:file-list="modelRef.files"
             :customRequest="customUpload"
             :accept="accept"
             :size="size"
@@ -144,17 +144,20 @@ export default defineComponent({
           }
         },
         { title: '备注内容', dataIndex: 'content' },
-        { title: '附件', width: 120, dataIndex: 'attachments', ellipsis: true }
+        { title: '附件', width: 120, dataIndex: 'files', ellipsis: true }
       ],
       dataSource: [],
       total: 0
     })
 
-    const getAttachments = row => {
-      return row?.files || row?.fileList || row?.images || row?.imageList || row?.resources || row?.attachments
+    const hasImage = file => {
+      const type = file?.type || file?.mimeType
+      return type.includes('image/')
     }
-    const formatAttachments = attachments => {
-      return isEmpty(attachments) ? [] : Array.isArray(attachments) ? attachments : [attachments]
+
+    const getFiles = row => {
+      const files = row?.files || row?.fileList || row?.images || row?.imageList || row?.resources || row?.attachments
+      return isEmpty(files) ? [] : Array.isArray(files) ? files : [files]
     }
 
     const handleRequest = async () => {
@@ -170,23 +173,31 @@ export default defineComponent({
             if (showPagination) {
               const list = data?.data ?? data?.list ?? []
               tableOptions.dataSource = list.map(row => {
-                const attachments = getAttachments(row)
+                const files = getFiles(row)
+                const images = files.filter(file => hasImage(file))
+                const attachments = files.filter(file => !hasImage(file))
                 const content = row?.remark || row?.content
                 return {
                   ...row,
                   content,
-                  attachments: formatAttachments(attachments)
+                  files,
+                  images,
+                  attachments
                 }
               })
               tableOptions.total = data?.total || 0
             } else {
               tableOptions.dataSource = (data || []).map(row => {
-                const attachments = getAttachments(row)
+                const files = getFiles(row)
+                const images = files.filter(file => hasImage(file))
+                const attachments = files.filter(file => !hasImage(file))
                 const content = row?.remark || row?.content
                 return {
                   ...row,
                   content,
-                  attachments: formatAttachments(attachments)
+                  files,
+                  images,
+                  attachments
                 }
               })
               tableOptions.total = (data || []).length
@@ -218,7 +229,7 @@ export default defineComponent({
 
     const modelRef = reactive({
       content: '',
-      attachments: []
+      files: []
     })
 
     const rulesRef = reactive({
@@ -233,11 +244,11 @@ export default defineComponent({
       validate()
         .then(async () => {
           state.confirmLoading = true
-          const attachments = modelRef.attachments.filter(val => val.status === 'done')
+          const files = modelRef.files.filter(val => val.status === 'done')
           await execRequest(
             customSubmit({
               content: modelRef.content,
-              ...(!isEmpty(attachments) ? { ids: attachments.map(val => val?.uid) } : {})
+              ...(!isEmpty(files) ? { ids: files.map(val => val?.uid) } : {})
             }),
             {
               success: ({ data }) => {

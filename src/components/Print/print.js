@@ -32,8 +32,8 @@ const prinf = options => {
       removeIframe()
     }
     // 完成回调
-    if (op.handleDone) {
-      op.handleDone()
+    if (op.callback) {
+      op.callback()
     }
   }, 200)
 }

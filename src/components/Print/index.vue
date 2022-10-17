@@ -80,7 +80,7 @@ export default defineComponent({
         print({
           el: elPrint.value,
           title: props.title,
-          handleDone
+          callback: handleDone
         })
       }, props.delay)
     }
