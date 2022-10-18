@@ -15,8 +15,7 @@
 | width | 宽度 | [String, Number] | `360` |
 | customRequest | 自定义请求 | Function | `-` |
 | showPagination | 是否显示分页 | Boolean | `true` |
-| pagination | 当前页数和每页条数 | Object | `{ page: 1, pageSize: 10 }` |
-| paginationConfig | 分页配置项 | Object | `{ showLessItems: true }` |
+| pageSize | 页码 | Number | `10` |
 | emptyText | 空数据显示的内容 | String | `暂无数据` |
 
 ### Emits
