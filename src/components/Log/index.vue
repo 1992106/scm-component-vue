@@ -43,7 +43,7 @@
             </div>
           </a-timeline-item>
         </a-timeline>
-        <Observer v-if="modalVisible && showPagination" :status="status" @intersect="handleReachBottom"></Observer>
+        <Observer v-if="modalVisible && showPagination" :status="status" @intersect="handleReachBottomLoad"></Observer>
       </template>
       <template v-else>
         <a-empty :image="simpleImage" :description="emptyText" />
@@ -146,7 +146,7 @@ export default defineComponent({
     )
 
     // 触底加载更多
-    const handleReachBottom = async () => {
+    const handleReachBottomLoad = async () => {
       const { customRequest, showPagination } = props
       if (!isFunction(customRequest) || showPagination) return
       const lastId = state.data[state.data.length - 1]?.id
@@ -195,7 +195,7 @@ export default defineComponent({
       simpleImage: Empty.PRESENTED_IMAGE_SIMPLE,
       ...toRefs(state),
       handlePullDownRefresh,
-      handleReachBottom,
+      handleReachBottomLoad,
       handleOk,
       handleCancel,
       formatTime
