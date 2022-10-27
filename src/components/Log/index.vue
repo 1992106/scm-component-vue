@@ -56,7 +56,7 @@ import { defineComponent, reactive, toRefs, watch, watchEffect } from 'vue'
 import { Badge, ConfigProvider, Empty, Timeline, TimelineItem } from 'ant-design-vue'
 import zhCn from 'ant-design-vue/es/locale/zh_CN'
 import { XDrawer } from 'scm-ui-vue'
-import Observer from '@components/Log/Observer'
+import Observer from '@components/Log/Observer.vue'
 import { isFunction } from 'lodash-es'
 import { execRequest, formatTime } from '@src/utils'
 export default defineComponent({
