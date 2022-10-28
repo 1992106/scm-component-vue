@@ -11,7 +11,8 @@
 | buttonProps | 按钮 `props` | Object | `-` |
 | mode | 导出模式【download和print】 | String | `download` |
 | fileType | 文件类型【pdf和excel】 | String | `pdf` |
-| fileName | 文件名 | String | `''` |
+| fileName | 文件名 | String | `` |
+| direction | 方向【横向:l/纵向:p】 | String | `'l'` |
 | delay | 延迟时间 | Number | `200` |
 | onBefore | 导出前的回调 | Function | `-` |
 

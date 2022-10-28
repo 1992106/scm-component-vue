@@ -1,6 +1,6 @@
 {
   "name": "scm-component-vue",
-  "version": "0.0.6",
+  "version": "0.0.6-1",
   "main": "dist/scm-component-vue.js",
   "module": "dist/scm-component-vue.mjs",
   "unpkg": "dist/scm-component-vue.umd.js",
@@ -40,7 +40,7 @@
     "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "qrcodejs2-fix": "^0.0.1",
-    "scm-ui-vue": "^0.0.21-1",
+    "scm-ui-vue": "^0.0.21-3",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
@@ -90,7 +90,7 @@
     "jspdf": "^2.5.1",
     "lodash-es": "^4.17.21",
     "qrcodejs2-fix": "^0.0.1",
-    "scm-ui-vue": "^0.0.21-1",
+    "scm-ui-vue": "^0.0.21-3",
     "vue": "^3.2.41"
   },
   "repository": {

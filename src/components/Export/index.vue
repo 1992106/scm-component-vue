@@ -41,7 +41,9 @@ export default defineComponent({
       default: 'pdf'
     },
     // 导出文件名
-    fileName: { type: String, default: '' },
+    fileName: { type: String },
+    // 方向【横向:l/纵向:p】
+    direction: { type: String, default: 'l' },
     // 延迟时间
     delay: { type: Number, default: 200 },
     // 导出前的回调
@@ -91,6 +93,7 @@ export default defineComponent({
           el: elExport.value,
           fileName: props.fileName,
           mode: props.mode,
+          direction: props.direction,
           callback: handleDone
         })
       }, props.delay)
