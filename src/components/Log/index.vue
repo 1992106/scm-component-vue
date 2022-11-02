@@ -1,60 +1,57 @@
 <template>
-  <a-config-provider :locale="zhCn">
-    <x-drawer
-      v-bind="$attrs"
-      v-model:visible="modalVisible"
-      class="x-log__dialog"
-      :title="title"
-      :width="width"
-      :spin-props="spinning"
-      :footer="null"
-      destroy-on-close
-      @cancel="handleCancel"
-      @ok="handleOk">
-      <template v-if="data.length > 0">
-        <div v-if="isNew" class="badge">
-          <a-badge color="red" text="有新消息，请点击" />
-          <a @click="handlePullDownRefresh">刷新</a>
-        </div>
-        <a-timeline>
-          <a-timeline-item v-for="(item, index) in data" :key="item?.id || index">
-            <div>
-              {{ formatTime(item?.createAt || item?.createdAt || item?.createTime || item?.createdTime) || '-' }}
-            </div>
-            <div>
-              {{ item?.createUser || item?.createdUser || '-' }}
-              <span>操作了</span>
-              <template v-if="item?.action">
-                <span class="color">【{{ item?.action }}】</span>
-                <div v-if="item?.content">
-                  <template v-if="Array.isArray(item?.content)">
-                    <p v-for="(text, i) in item?.content" :key="text || i">{{ text }}</p>
-                  </template>
-                  <p v-else>{{ item?.content }}</p>
-                </div>
-                <template v-else>--</template>
-              </template>
-              <template v-else>
-                <template v-if="item?.content">
-                  <span class="color" v-html="'【' + item?.content + '】'"></span>
+  <x-drawer
+    v-bind="$attrs"
+    v-model:visible="modalVisible"
+    class="x-log__dialog"
+    :title="title"
+    :width="width"
+    :spin-props="spinning"
+    :footer="null"
+    destroy-on-close
+    @cancel="handleCancel"
+    @ok="handleOk">
+    <template v-if="data.length > 0">
+      <div v-if="isNew" class="badge">
+        <a-badge color="red" text="有新消息，请点击" />
+        <a @click="handlePullDownRefresh">刷新</a>
+      </div>
+      <a-timeline>
+        <a-timeline-item v-for="(item, index) in data" :key="item?.id || index">
+          <div>
+            {{ formatTime(item?.createAt || item?.createdAt || item?.createTime || item?.createdTime) || '-' }}
+          </div>
+          <div>
+            {{ item?.createUser || item?.createdUser || '-' }}
+            <span>操作了</span>
+            <template v-if="item?.action">
+              <span class="color">【{{ item?.action }}】</span>
+              <div v-if="item?.content">
+                <template v-if="Array.isArray(item?.content)">
+                  <p v-for="(text, i) in item?.content" :key="text || i">{{ text }}</p>
                 </template>
-                <template v-else>--</template>
+                <p v-else>{{ item?.content }}</p>
+              </div>
+              <template v-else>--</template>
+            </template>
+            <template v-else>
+              <template v-if="item?.content">
+                <span class="color" v-html="'【' + item?.content + '】'"></span>
               </template>
-            </div>
-          </a-timeline-item>
-        </a-timeline>
-        <Observer v-if="modalVisible && showPagination" :status="status" @intersect="handleReachBottomLoad"></Observer>
-      </template>
-      <template v-else>
-        <a-empty :image="simpleImage" :description="emptyText" />
-      </template>
-    </x-drawer>
-  </a-config-provider>
+              <template v-else>--</template>
+            </template>
+          </div>
+        </a-timeline-item>
+      </a-timeline>
+      <Observer v-if="modalVisible && showPagination" :status="status" @intersect="handleReachBottomLoad"></Observer>
+    </template>
+    <template v-else>
+      <a-empty :image="simpleImage" :description="emptyText" />
+    </template>
+  </x-drawer>
 </template>
 <script>
 import { defineComponent, reactive, toRefs, watch, watchEffect } from 'vue'
-import { Badge, ConfigProvider, Empty, Timeline, TimelineItem } from 'ant-design-vue'
-import zhCn from 'ant-design-vue/es/locale/zh_CN'
+import { Badge, Empty, Timeline, TimelineItem } from 'ant-design-vue'
 import { XDrawer } from 'scm-ui-vue'
 import Observer from '@components/Log/Observer.vue'
 import { isFunction } from 'lodash-es'
@@ -64,7 +61,6 @@ export default defineComponent({
   components: {
     'x-drawer': XDrawer,
     Observer,
-    'a-config-provider': ConfigProvider,
     'a-timeline': Timeline,
     'a-timeline-item': TimelineItem,
     'a-empty': Empty,
@@ -191,7 +187,6 @@ export default defineComponent({
     expose({})
 
     return {
-      zhCn,
       simpleImage: Empty.PRESENTED_IMAGE_SIMPLE,
       ...toRefs(state),
       handlePullDownRefresh,

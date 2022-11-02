@@ -2,65 +2,59 @@ import JsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { toBlob } from './utils'
 
-const jsPDF = ({ el, fileName, direction, mode, callback }) => {
-  el.style.paddingLeft = '20px'
-  el.style.paddingRight = '20px'
-  html2canvas(el, {
-    dpi: 300,
+export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
+  // 获取a4纸的宽高
+  const [a4w, a4h] = direction === 'l' ? [841.89, 592.28] : [592.28, 841.89]
+  const dom = el.cloneNode(true)
+  dom.style.width = `${a4w}pt` // 设置PDF宽度
+  document.body.appendChild(dom)
+
+  // 滚动置顶，防止顶部空白
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 获取滚动轴滚动的长度
+  let opts = {
+    dpi: 350,
     scale: window.devicePixelRatio * 3,
     useCORS: true,
-    allowTaint: true,
-    height: el.offsetHeight,
-    width: el.offsetWidth,
-    backgroundColor: '#fff',
-    windowWidth: document.body.scrollWidth,
-    windowHeight: document.body.scrollHeight
-  }).then(canvas => {
-    // a4纸的尺寸[841.89,595.28]
-    let a4Width // A4纸宽度
-    let a4Height // A4纸高度
-    if (direction === 'l') {
-      // 横向
-      a4Width = 841.89
-      a4Height = 592.28
-    } else if (direction === 'p') {
-      // 纵向
-      a4Width = 592.28
-      a4Height = 841.89
-    }
+    background: '#FFF',
+    allowTaint: false,
+    scrollY: -scrollTop,
+    scrollX: 0
+  }
 
-    // 一页pdf显示html页面生成的canvas高度;
-    const pageHeight = Math.floor((canvas.width / a4Width) * a4Height)
-    // 未生成pdf的html页面总高度
-    let totalHeight = canvas.height
-    // 页面偏移
-    let position = 0
-    // html页面生成的canvas在pdf中图片的宽高
-    const imgWidth = a4Width
-    const imgHeight = Math.floor((a4Width / canvas.width) * canvas.height)
-
-    const pageData = canvas.toDataURL('image/jpeg', 1.0)
-
+  html2canvas(dom, opts).then(canvas => {
     const pdf = new JsPDF(direction, 'pt', 'a4')
+    const ctx = canvas.getContext('2d')
+    const imgHeight = Math.floor((canvas.width / a4w) * a4h) // 按A4显示比例换算一页图像的像素高度
+    let renderedHeight = 0
 
-    pdf.setDisplayMode('fullwidth', 'continuous', 'FullScreen')
+    while (renderedHeight < canvas.height) {
+      const page = document.createElement('canvas')
+      page.width = canvas.width
+      page.height = Math.min(imgHeight, canvas.height - renderedHeight) // 可能内容不足一页
 
-    // 有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
-    // 当内容未超过pdf一页显示的范围，无需分页
-    if (totalHeight < pageHeight) {
-      pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-    } else {
-      // 多页打印
-      while (totalHeight > 0) {
-        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-        totalHeight -= pageHeight
-        position -= a4Height
-        // 避免添加空白页
-        if (totalHeight > 0) {
-          pdf.addPage()
-        }
+      // 用getImageData剪裁指定区域，并画到前面创建的canvas对象中
+      page
+        .getContext('2d')
+        .putImageData(
+          ctx.getImageData(0, renderedHeight, canvas.width, Math.min(imgHeight, canvas.height - renderedHeight)),
+          0,
+          0
+        )
+      pdf.addImage(
+        page.toDataURL('image/jpeg', 1.0),
+        'JPEG',
+        0,
+        0,
+        a4w,
+        Math.min(a4h, (a4w * page.height) / page.width)
+      ) // 添加图像到页面
+
+      renderedHeight += imgHeight
+      if (renderedHeight < canvas.height) {
+        pdf.addPage() // 如果后面还有内容，添加一个空页
       }
     }
+
     // 下载
     if (mode === 'download') {
       pdf.save(fileName || Date.now().toString())
@@ -71,9 +65,9 @@ const jsPDF = ({ el, fileName, direction, mode, callback }) => {
       const myWindow = window.open(link)
       myWindow.print()
     }
+    // 移除节点
+    dom.parentNode.removeChild(dom)
     // 完成回调
     callback && callback(pdf)
   })
 }
-
-export default jsPDF

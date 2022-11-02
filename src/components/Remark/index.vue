@@ -1,70 +1,67 @@
 <template>
-  <a-config-provider :locale="zhCn">
-    <x-modal
-      v-bind="$attrs"
-      v-model:visible="modalVisible"
-      class="x-remark__dialog"
-      :title="title"
-      :width="width"
-      :spin-props="spinning"
-      :confirm-loading="confirmLoading"
-      destroy-on-close
-      @ok="handleOk"
-      @cancel="handleCancel">
-      <x-table
-        v-bind="tableOptions"
-        v-model:pagination="pages"
-        :rowKey="rowKey"
-        :showPagination="showPagination"
-        :paginationConfig="paginationConfig"
-        @search="handleRequest">
-        <template #bodyCell="{ column, record: { files, attachments, images } }">
-          <template v-if="column.dataIndex === 'files'">
-            <template v-if="files.length">
-              <template v-if="images.length">
-                <x-image :width="50" :height="50" :thumbnail="images[0]?.thumbUrl" :urls="images"></x-image>
-              </template>
-              <template v-if="attachments.length">
-                <a-space>
-                  <a-button
-                    v-for="(file, index) in attachments"
-                    :key="file?.id || index"
-                    type="link"
-                    @click="handleDownload(file)">
-                    {{ file?.fileName }}
-                  </a-button>
-                </a-space>
-              </template>
+  <x-modal
+    v-bind="$attrs"
+    v-model:visible="modalVisible"
+    class="x-remark__dialog"
+    :title="title"
+    :width="width"
+    :spin-props="spinning"
+    :confirm-loading="confirmLoading"
+    destroy-on-close
+    @ok="handleOk"
+    @cancel="handleCancel">
+    <x-table
+      v-bind="tableOptions"
+      v-model:pagination="pages"
+      :rowKey="rowKey"
+      :showPagination="showPagination"
+      :paginationConfig="paginationConfig"
+      @search="handleRequest">
+      <template #bodyCell="{ column, record: { files, attachments, images } }">
+        <template v-if="column.dataIndex === 'files'">
+          <template v-if="files.length">
+            <template v-if="images.length">
+              <x-image :width="50" :height="50" :thumbnail="images[0]?.thumbUrl" :urls="images"></x-image>
+            </template>
+            <template v-if="attachments.length">
+              <a-space>
+                <a-button
+                  v-for="(file, index) in attachments"
+                  :key="file?.id || index"
+                  type="link"
+                  @click="handleDownload(file)">
+                  {{ file?.fileName }}
+                </a-button>
+              </a-space>
             </template>
           </template>
           <template v-else>--</template>
         </template>
-      </x-table>
-      <a-form :label-col="{ span: 0 }">
-        <a-form-item v-bind="validateInfos.content">
-          <a-textarea
-            v-model:value="modelRef.content"
-            placeholder="请输入备注"
-            show-count
-            :rows="4"
-            :maxlength="maxlength" />
-        </a-form-item>
-        <a-form-item>
-          <x-upload
-            v-model:file-list="modelRef.files"
-            :customRequest="customUpload"
-            :accept="accept"
-            :size="size"
-            :maxCount="maxCount"></x-upload>
-        </a-form-item>
-      </a-form>
-    </x-modal>
-  </a-config-provider>
+      </template>
+    </x-table>
+    <a-form :label-col="{ span: 0 }">
+      <a-form-item v-bind="validateInfos.content">
+        <a-textarea
+          v-model:value="modelRef.content"
+          placeholder="请输入备注"
+          show-count
+          :rows="4"
+          :maxlength="maxlength" />
+      </a-form-item>
+      <a-form-item>
+        <x-upload
+          v-model:file-list="modelRef.files"
+          :customRequest="customUpload"
+          :accept="accept"
+          :size="size"
+          :maxCount="maxCount"></x-upload>
+      </a-form-item>
+    </a-form>
+  </x-modal>
 </template>
 <script>
 import { reactive, toRefs, defineComponent, watchEffect, watch } from 'vue'
-import { Button, ConfigProvider, Form, FormItem, Space, Textarea } from 'ant-design-vue'
-import zhCn from 'ant-design-vue/es/locale/zh_CN'
+import { Button, Form, FormItem, Space, Textarea } from 'ant-design-vue'
 import { XModal, XTable, XUpload, XImage } from 'scm-ui-vue'
 import { isFunction } from 'lodash-es'
 import { formatTime, isEmpty, download, execRequest } from '@src/utils'
@@ -75,7 +72,6 @@ export default defineComponent({
     'x-table': XTable,
     'x-upload': XUpload,
     'x-image': XImage,
-    'a-config-provider': ConfigProvider,
     'a-form': Form,
     'a-form-item': FormItem,
     'a-textarea': Textarea,
@@ -276,7 +272,6 @@ export default defineComponent({
     expose({})
 
     return {
-      zhCn,
       ...toRefs(state),
       tableOptions,
       handleRequest,

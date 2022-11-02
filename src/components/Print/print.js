@@ -7,10 +7,7 @@ const defaultOptions = {
 }
 let iframe = null
 let dom = null
-/**
- * 检查配置是否合法
- * @param {*} options
- */
+
 const checkOptions = options => {
   if (!options.el) {
     throw new Error('el must be a nodeType')
@@ -19,23 +16,6 @@ const checkOptions = options => {
     ...defaultOptions,
     ...options
   }
-}
-const prinf = options => {
-  const op = checkOptions(options)
-  dom = op.el.cloneNode(true)
-  const handle = createIframe(op)
-
-  setTimeout(() => {
-    handle.focus()
-    handle.print()
-    if (op.debug === false) {
-      removeIframe()
-    }
-    // 完成回调
-    if (op.callback) {
-      op.callback()
-    }
-  }, 200)
 }
 
 const createIframe = op => {
@@ -47,7 +27,7 @@ const createIframe = op => {
   }
   // 插入需要打印的目标元素
   document.querySelector('body').appendChild(iframe)
-  iframe.contentDocument.title = title
+  title && (iframe.contentDocument.title = title)
   const { body, head } = iframe.contentDocument
   const contentWindow = iframe.contentWindow
   // 插入head中的link stylesheet
@@ -80,6 +60,23 @@ const removeIframe = () => {
     iframe = null
     dom = null
   }
+}
+
+// 打印
+const prinf = options => {
+  const op = checkOptions(options)
+  dom = op.el.cloneNode(true)
+  const handle = createIframe(op)
+
+  setTimeout(() => {
+    handle.focus()
+    handle.print()
+    if (op.debug === false) {
+      removeIframe()
+    }
+    // 完成回调
+    op.callback && op.callback()
+  }, 200)
 }
 
 export default prinf

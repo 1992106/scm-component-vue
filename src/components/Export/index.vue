@@ -16,7 +16,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { isFunction } from 'lodash-es'
-import jsPDF from './jsPDF'
+import { jsPDF } from './jsPDF'
 import { execRequest } from '@src/utils'
 export default defineComponent({
   name: 'XExport',
@@ -92,8 +92,8 @@ export default defineComponent({
         jsPDF({
           el: elExport.value,
           fileName: props.fileName,
-          mode: props.mode,
           direction: props.direction,
+          mode: props.mode,
           callback: handleDone
         })
       }, props.delay)

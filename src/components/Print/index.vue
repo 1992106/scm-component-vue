@@ -42,7 +42,7 @@ export default defineComponent({
     qrcodeProps: { type: Object },
     // 条形码
     barcodeProps: { type: Object },
-    // 打印页头
+    // 打印标题
     title: { type: String, default: '' },
     // 延迟时间
     delay: { type: Number, default: 1000 },
