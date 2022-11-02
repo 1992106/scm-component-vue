@@ -46,7 +46,7 @@ export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
         0,
         0,
         a4w,
-        Math.min(a4h, (a4w * page.height) / page.width)
+        Math.min(a4h, (a4w / page.width) * page.height)
       ) // 添加图像到页面
 
       renderedHeight += imgHeight
