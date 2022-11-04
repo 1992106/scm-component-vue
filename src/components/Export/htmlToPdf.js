@@ -14,7 +14,7 @@ export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
   dom.style.width = `${a4Width}pt` // 设置PDF宽度
   document.body.appendChild(dom)
 
-  // 一页pdf显示html页面生成的canvas高度;
+  // 一页的高度
   const pageHeight = Math.floor((dom.scrollWidth / a4Width) * a4Height)
   // 获取分割dom，此处为class类名为item的dom
   const domList = dom.getElementsByClassName('page-break')
