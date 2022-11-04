@@ -16,7 +16,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { isFunction } from 'lodash-es'
-import { jsPDF } from './jsPDF'
+import { jsPDF } from './htmlToPdf'
 import { execRequest } from '@src/utils'
 export default defineComponent({
   name: 'XExport',
@@ -45,7 +45,7 @@ export default defineComponent({
     // 方向【横向:l/纵向:p】
     direction: { type: String, default: 'l' },
     // 延迟时间
-    delay: { type: Number, default: 200 },
+    delay: { type: Number, default: 1000 },
     // 导出前的回调
     onBefore: { type: Function }
   },

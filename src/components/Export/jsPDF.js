@@ -5,6 +5,7 @@ import { toBlob } from './utils'
 export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
   // 获取a4纸的宽高
   const [a4Width, a4Height] = direction === 'l' ? [841.89, 592.28] : [592.28, 841.89]
+  // 复制一个dom元素插入body,解决横向滚动问题
   const dom = el.cloneNode(true)
   dom.style.width = `${a4Width}pt` // 设置PDF宽度
   document.body.appendChild(dom)
@@ -12,11 +13,9 @@ export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
   // 滚动置顶，防止顶部空白
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 获取滚动轴滚动的长度
   let opts = {
-    dpi: 350,
     scale: window.devicePixelRatio * 3,
-    useCORS: true,
-    background: '#FFF',
-    allowTaint: false,
+    allowTaint: true,
+    backgroundColor: '#FFF',
     scrollY: -scrollTop,
     scrollX: 0
   }
