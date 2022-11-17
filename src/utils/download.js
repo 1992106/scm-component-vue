@@ -107,7 +107,7 @@ const compressImage = async (src, width, height, quality = 1) => {
     image.onerror = () => {
       reject()
     }
-    image.src = src
+    image.src = `${src}?time=${Date.now()}`
   })
 }
 
