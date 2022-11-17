@@ -72,7 +72,11 @@ export const toFixed = (value, length = 2) => {
 export const hasQueryString = url => {
   if (url) {
     const src = new URL(url)
-    return src.hostname && !!src.searchParams.toString()
+    // 过滤base64
+    if (src.hostname) {
+      return !!src.searchParams.toString()
+    }
+    return false
   }
   return false
 }
