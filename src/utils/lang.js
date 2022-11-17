@@ -71,8 +71,8 @@ export const toFixed = (value, length = 2) => {
  */
 export const hasQueryString = url => {
   if (url) {
-    const searchParams = new URL(url).searchParams
-    return !!searchParams.toString()
+    const src = new URL(url)
+    return src.hostname && !!src.searchParams.toString()
   }
   return false
 }
