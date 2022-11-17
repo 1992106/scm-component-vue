@@ -106,7 +106,7 @@ export default defineComponent({
 .x-print__content {
   display: flex;
 
-  & > div:first-of-type {
+  & > div:first-of-type:not(.x-print__content-box) {
     margin-right: 10px;
   }
 
