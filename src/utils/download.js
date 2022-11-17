@@ -1,5 +1,5 @@
 import myFetch from '@utils/fetch'
-import { getPixelSize, isEmpty } from '@utils/lang'
+import { getPixelSize, hasQueryString, isEmpty } from '@utils/lang'
 
 const { request } = myFetch
 
@@ -107,7 +107,11 @@ const compressImage = async (src, width, height, quality = 1) => {
     image.onerror = () => {
       reject()
     }
-    image.src = `${src}?time=${Date.now()}`
+    // 判断是否有查询字符串，如果有则不拼接时间戳
+    if (!hasQueryString(src)) {
+      src = `${src}?time=${Date.now()}`
+    }
+    image.src = src
   })
 }
 

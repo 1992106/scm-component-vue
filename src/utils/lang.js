@@ -65,6 +65,19 @@ export const toFixed = (value, length = 2) => {
 }
 
 /**
+ * 判断是否有查询字符串
+ * @param url
+ * @returns {boolean}
+ */
+export const hasQueryString = url => {
+  if (url) {
+    const searchParams = new URL(url).searchParams
+    return !!searchParams.toString()
+  }
+  return false
+}
+
+/**
  * 获取像素大小
  * @param val
  * @returns {number|null}
