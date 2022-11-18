@@ -65,18 +65,30 @@ export const toFixed = (value, length = 2) => {
 }
 
 /**
+ * 是否是base64 url
+ * @param url
+ * @returns {boolean}
+ */
+export const isBase64 = url => {
+  if (url) {
+    return url.startsWith('data:image/')
+  }
+  return false
+}
+
+/**
  * 判断是否有查询字符串
  * @param url
  * @returns {boolean}
  */
 export const hasQueryString = url => {
   if (url) {
-    const src = new URL(url)
     // 过滤base64 url
-    if (src.hostname) {
-      return !!src.searchParams.toString()
+    if (isBase64(url)) {
+      return true
     }
-    return true
+    const searchParams = new URL(url)?.searchParams
+    return !!searchParams.toString()
   }
   return false
 }

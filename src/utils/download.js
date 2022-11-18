@@ -1,5 +1,5 @@
 import myFetch from '@utils/fetch'
-import { getPixelSize, hasQueryString, isEmpty } from '@utils/lang'
+import { getPixelSize, isBase64, isEmpty } from '@utils/lang'
 
 const { request } = myFetch
 
@@ -78,13 +78,16 @@ const exportFile = async (url, params = {}, method = 'get') => {
  * @param quality
  * @returns {Promise<unknown>}
  */
-const compressImage = async (src, width, height, quality = 1) => {
+const compressImage = (src, width, height, quality = 1) => {
   return new Promise((resolve, reject) => {
+    if (isBase64(src)) {
+      return resolve(src)
+    }
     const image = new Image()
     width = getPixelSize(width)
     height = getPixelSize(height)
     image.setAttribute('crossOrigin', 'Anonymous')
-    image.onload = async () => {
+    image.onload = () => {
       // 有宽度无高度时，等比例计算高度
       if (!isEmpty(width) && isEmpty(height)) {
         height = (width / image.width) * image.height
@@ -104,12 +107,8 @@ const compressImage = async (src, width, height, quality = 1) => {
       const canvasURL = canvas.toDataURL('image/jpeg', quality)
       resolve(canvasURL)
     }
-    image.onerror = () => {
-      reject()
-    }
-    // 判断是否有查询字符串，如果有则不拼接时间戳
-    if (!hasQueryString(src)) {
-      src = `${src}?time=${Date.now()}`
+    image.onerror = err => {
+      reject(err)
     }
     image.src = src
   })
