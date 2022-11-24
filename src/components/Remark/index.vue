@@ -7,6 +7,7 @@
     :width="width"
     :spin-props="spinning"
     :confirm-loading="confirmLoading"
+    :okButtonProps="{ disabled: hasUploading }"
     destroy-on-close
     @ok="handleOk"
     @cancel="handleCancel">
@@ -60,7 +61,7 @@
   </x-modal>
 </template>
 <script>
-import { reactive, toRefs, defineComponent, watchEffect, watch } from 'vue'
+import { reactive, toRefs, defineComponent, watchEffect, watch, computed } from 'vue'
 import { Button, Form, FormItem, Space, Textarea } from 'ant-design-vue'
 import { XModal, XTable, XUpload, XImage } from 'scm-ui-vue'
 import { isFunction } from 'lodash-es'
@@ -148,7 +149,19 @@ export default defineComponent({
 
     const hasImage = file => {
       const type = file?.type || file?.mimeType
-      return type.includes('image/')
+      // 排除特殊图片格式：rgb/pcx/psd/dwg/mdi/pgm/cmx
+      return (
+        type?.includes('image/') &&
+        ![
+          'image/x-pcx',
+          'image/x-rgb',
+          'image/vnd.adobe.photoshop',
+          'image/vnd.dwg',
+          'image/vnd.ms-modi',
+          'image/x-portable-graymap',
+          'image/x-cmx'
+        ].includes(type)
+      )
     }
 
     const getFiles = row => {
@@ -223,6 +236,11 @@ export default defineComponent({
       download(url, fileName)
     }
 
+    // 是否有上传中的文件
+    const hasUploading = computed(() => {
+      return modelRef.files.some(val => val.status === 'uploading')
+    })
+
     const modelRef = reactive({
       content: '',
       files: []
@@ -278,6 +296,7 @@ export default defineComponent({
       handleDownload,
       validateInfos,
       modelRef,
+      hasUploading,
       handleOk,
       handleCancel
     }
