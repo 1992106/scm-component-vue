@@ -15,7 +15,7 @@
 | direction | 方向【横向:l/纵向:p】 | String | `'l'` |
 | unit | 单位 | String | `'pt'` |
 | size | 尺寸 | Array | `-` |
-| delay | 延迟时间 | Number | `200` |
+| delay | 延迟时间 | Number | `1000` |
 | onBefore | 导出前的回调 | Function | `-` |
 
 ### Emits
