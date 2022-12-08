@@ -13,6 +13,8 @@
 | fileType | 文件类型【pdf和excel】 | String | `pdf` |
 | fileName | 文件名 | String | `` |
 | direction | 方向【横向:l/纵向:p】 | String | `'l'` |
+| unit | 单位 | String | `'pt'` |
+| size | 尺寸 | Array | `-` |
 | delay | 延迟时间 | Number | `200` |
 | onBefore | 导出前的回调 | Function | `-` |
 

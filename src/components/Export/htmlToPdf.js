@@ -2,20 +2,20 @@ import JsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { toBlob } from './utils'
 
-export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
-  // 滚动置顶，防止顶部空白
-  // window.pageYoffset = 0
-  // document.documentElement.scrollTop = 0
-  // document.body.scrollTop = 0
-  // a4纸的尺寸
-  const [a4Width, a4Height] = direction === 'l' ? [841.89, 592.28] : [592.28, 841.89]
+export const jsPDF = ({ el, fileName, direction, unit, size, mode, callback }) => {
+  // 如果没有内容，则不执行
+  if (el.children.length === 0) {
+    return
+  }
+  // 默认为a4纸的尺寸
+  const [a4Width, a4Height] = size ? size : direction === 'l' ? [841.89, 592.28] : [592.28, 841.89]
   // 复制一个dom元素插入body,解决横向滚动问题
   const dom = el.cloneNode(true)
-  dom.style.width = `${a4Width}pt` // 设置PDF宽度
+  dom.style.width = `${a4Width}${unit}` // 设置PDF宽度
   document.body.appendChild(dom)
 
   // 一页的高度
-  const pageHeight = Math.floor((dom.scrollWidth / a4Width) * a4Height)
+  const pageHeight = (dom.scrollWidth / a4Width) * a4Height
   // 获取分割dom，此处为class类名为item的dom
   const domList = dom.getElementsByClassName('page-break')
   // 进行分割操作，当dom内容已超出a4的高度，则将该dom前插入一个空dom，把他挤下去，分割
@@ -49,18 +49,18 @@ export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
     backgroundColor: '#fff'
   }).then(canvas => {
     // 一页pdf显示html页面生成的canvas高度
-    const pageHeight = Math.floor((canvas.width / a4Width) * a4Height)
+    const pageHeight = Math.ceil((canvas.width / a4Width) * a4Height)
     // 未生成pdf的html页面总高度
     let leftHeight = canvas.height
     // 页面偏移
     let position = 0
     // html页面生成的canvas在pdf中图片的宽高
     const imgWidth = a4Width
-    const imgHeight = Math.floor((a4Width / canvas.width) * canvas.height)
+    const imgHeight = (a4Width / canvas.width) * canvas.height
 
     const pageData = canvas.toDataURL('image/jpeg', 1.0)
 
-    const pdf = new JsPDF(direction, 'pt', 'a4')
+    const pdf = new JsPDF(direction, unit, size || 'a4')
 
     pdf.setDisplayMode('fullwidth', 'continuous', 'FullScreen')
 

@@ -44,6 +44,10 @@ export default defineComponent({
     fileName: { type: String },
     // 方向【横向:l/纵向:p】
     direction: { type: String, default: 'l' },
+    // 单位
+    unit: { type: String, default: 'pt' },
+    // 尺寸
+    size: { type: Array },
     // 延迟时间
     delay: { type: Number, default: 1000 },
     // 导出前的回调
@@ -93,6 +97,8 @@ export default defineComponent({
           el: elExport.value,
           fileName: props.fileName,
           direction: props.direction,
+          unit: props.unit,
+          size: props.size,
           mode: props.mode,
           callback: handleDone
         })
