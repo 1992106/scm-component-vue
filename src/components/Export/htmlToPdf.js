@@ -45,7 +45,9 @@ export const jsPDF = ({ el, fileName, direction, unit, size, mode, callback }) =
 
   html2canvas(dom, {
     scale: window.devicePixelRatio * 3,
-    allowTaint: true,
+    useCORS: true,
+    width: dom.scrollWidth,
+    height: dom.scrollHeight,
     backgroundColor: '#fff'
   }).then(canvas => {
     // 一页pdf显示html页面生成的canvas高度
