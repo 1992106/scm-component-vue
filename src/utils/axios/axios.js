@@ -4,9 +4,7 @@ import router from '@src/router'
 import setting from '@src/config'
 import { omit } from 'lodash-es'
 import { getAccessStorage } from '@utils/accessStorage'
-import { disposeParams, sleep } from './utils'
-import { cache } from './LRUCache'
-import { queue } from './requestQueue'
+import { disposeParams } from './utils'
 
 // 全局axios默认值
 axios.defaults.baseURL = setting.api_url
@@ -22,14 +20,6 @@ const httpService = axios.create({
 // 添加请求拦截器
 httpService.interceptors.request.use(
   config => {
-    // 是否支持取消
-    const hasCancel = config?.options['$cancel']
-    if (hasCancel) {
-      // 在请求开始前，对之前的请求做检查取消操作
-      queue.removeQueue(config)
-      // 将当前请求添加到中
-      queue.addQueue(config)
-    }
     const apiUrl = getAccessStorage(setting.api_name)
     const token = getAccessStorage(setting.token_name)
     if (apiUrl) config.baseURL = apiUrl
@@ -50,8 +40,6 @@ httpService.interceptors.request.use(
 // 添加响应拦截器
 httpService.interceptors.response.use(
   response => {
-    // 在请求结束后，移除本次请求
-    queue.removeQueue(response.config)
     // 过滤文件流格式
     if (!response.headers['content-type'].includes('application/json')) {
       return response
@@ -59,12 +47,6 @@ httpService.interceptors.response.use(
     const { data, config } = response
     const code = data?.code || data?.status
     if (code === 200) {
-      // 是否支持缓存
-      const hasCache = config?.options['$cache']
-      // 设置缓存
-      if (hasCache) {
-        cache.set(config, response)
-      }
       // 是否有自定义$msg
       const hasMsg = config?.options['$msg'] !== 'none'
       const msg = config?.options['$msg'] || data?.message || data?.msg
@@ -85,8 +67,6 @@ httpService.interceptors.response.use(
   },
   error => {
     const { response } = error
-    // 在请求结束后，移除本次请求
-    queue.removeQueue(response?.config)
     if (response) {
       const { data, status, config } = response
       const msg = data?.msg || (typeof data === 'string' ? data : '未知错误')
@@ -98,19 +78,6 @@ httpService.interceptors.response.use(
         }
         message.warning('登录失效，请重新登录！')
       } else {
-        // 是否支持重试
-        const hasRetry = config?.options['$retry'] || config['$retryDelay']
-        if (hasRetry) {
-          const { $retry: retry = 3, $retryDelay: retryDelay = 1000 } = config?.options || {}
-          config.__retryCount = config.__retryCount || 0
-          if (config.__retryCount >= retry) {
-            return Promise.reject()
-          }
-          config.__retryCount += 1
-          return sleep(retryDelay).then(() => {
-            return httpService(config)
-          })
-        }
         notification.error({ message: `${status}错误：${config.url}`, description: msg })
       }
     } else {

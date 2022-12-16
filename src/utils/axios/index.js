@@ -1,5 +1,4 @@
 import httpService from './axios'
-import { cache } from '@utils/axios/LRUCache'
 
 /**
  * request请求
@@ -16,11 +15,6 @@ export function request(url, params = {}, method = 'post', options = {}) {
     ...(method === 'post' ? { data: params } : {}),
     ...(method === 'get' ? { params: params } : {}),
     options
-  }
-  // 获取缓存
-  const result = cache.get(config)
-  if (result) {
-    return Promise.reject(result)
   }
   return new Promise((resolve, reject) => {
     httpService(config)
