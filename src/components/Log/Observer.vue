@@ -8,16 +8,16 @@ export default defineComponent({
     status: {
       type: String,
       validator(value) {
-        return ['', 'done', 'error', 'loading', 'end'].includes(value)
+        return ['done', 'error', 'loading', 'end'].includes(value)
       },
       required: true,
-      default: 'done'
+      default: ''
     },
     statusText: {
       type: Object,
       default: () => ({
         done: '',
-        error: '',
+        error: '加载失败',
         loading: '加载中...',
         end: '—— 到底了 ——'
       })
