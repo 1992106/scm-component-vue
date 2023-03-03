@@ -4316,10 +4316,10 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scm-ui-vue@^0.0.23:
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/scm-ui-vue/-/scm-ui-vue-0.0.23.tgz#3de1c640c75508a818331c8e92e3fb93c2c0433e"
-  integrity sha512-9dYl3837XlN2HRP7n5xzrU5RuQxsFcWxy19hrUmOLEaGMuTXU9BzGAmhaqJ3C8u6RVIRxPWekJAWNb0FWyJiDw==
+scm-ui-vue@^0.0.23-1:
+  version "0.0.23-1"
+  resolved "https://registry.yarnpkg.com/scm-ui-vue/-/scm-ui-vue-0.0.23-1.tgz#caf8d8a32797b2c48cb206df5fb090d1456c3ba8"
+  integrity sha512-qhIJm6lASMeLBjMefKTl/l+Ei3fesxeJ+pwlnJRMlcKwc/BpP0CfUJJ43/2vIGS0wTfryN6e6NNsgHWcaDXN9A==
   dependencies:
     "@ant-design/icons-vue" "^6.1.0"
     ant-design-vue "^3.2.15"

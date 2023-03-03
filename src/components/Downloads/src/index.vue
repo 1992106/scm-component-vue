@@ -19,11 +19,13 @@
           :empty-text="emptyText" />
       </a-spin>
     </template>
-    <a-button shape="circle">
-      <template #icon>
-        <CloudDownloadOutlined />
-      </template>
-    </a-button>
+    <slot>
+      <a-button shape="circle">
+        <template #icon>
+          <CloudDownloadOutlined />
+        </template>
+      </a-button>
+    </slot>
   </a-popover>
 </template>
 <script>
