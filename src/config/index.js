@@ -1,6 +1,6 @@
 const setting = {
   // 标题
-  title: 'SCM UI',
+  title: 'SCM Component',
 
   //  请求名称
   api_name: 'scm-api',

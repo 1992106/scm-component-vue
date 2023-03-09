@@ -17,7 +17,7 @@ import { useRouter } from 'vue-router'
 import { whiteRoutes } from '@src/router'
 
 export default defineComponent({
-  name: 'MyBreadcrumb',
+  name: 'AppBreadcrumb',
   components: { Breadcrumb },
   setup() {
     const router = useRouter()

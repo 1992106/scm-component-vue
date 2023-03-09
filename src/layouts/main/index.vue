@@ -1,7 +1,7 @@
 <template>
   <router-view v-slot="{ Component, route }">
     <transition mode="out-in" name="fade-slide" appear>
-      <keep-alive :include="cachedTabList">
+      <keep-alive :include="cachedRoutes">
         <component :is="Component" :key="route.fullPath" />
       </keep-alive>
     </transition>
@@ -13,15 +13,15 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
-  name: 'MyMain',
+  name: 'AppMain',
   setup() {
     const store = useStore()
-    const cachedTabList = computed(() => {
-      return store.state.router.cachedTabList.map(item => item.name)
+    const cachedRoutes = computed(() => {
+      return store.getters['router/cachedRoutes'].map(item => item.name)
     })
 
     return {
-      cachedTabList
+      cachedRoutes
     }
   }
 })

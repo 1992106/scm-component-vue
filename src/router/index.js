@@ -1,5 +1,6 @@
 import { markRaw } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@src/store'
 import BaseLayout from '@src/layouts/BaseLayout.vue'
 
 export const routes = [
@@ -49,7 +50,7 @@ export const routes = [
   },
   {
     path: '/',
-    index: 'index',
+    index: 'Index',
     component: markRaw(BaseLayout),
     redirect: '/dashboard',
     children: [
@@ -93,9 +94,10 @@ export const whiteRoutes = ['404', '403', 'Login', 'Redirect', 'ErrorPage']
 
 // 重置路由（使用router.addRoute动态添加路由时，在退出登录的时候需要重置路由）
 export const resetRouter = () => {
+  const dynamicRoutes = store.getters['router/asyncRoutes'] // 动态路由
   router.getRoutes().forEach(route => {
     const { name } = route
-    if (name && !whiteRoutes.includes(name)) {
+    if (name && dynamicRoutes.some(val => val.name === name)) {
       router.hasRoute(name) && router.removeRoute(name)
     }
   })

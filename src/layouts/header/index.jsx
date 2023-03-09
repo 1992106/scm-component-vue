@@ -6,7 +6,7 @@ import Avatar from '../avatar/index.jsx'
 import styles from './index.module.scss'
 
 const MyHeader = defineComponent({
-  name: 'MyHeader',
+  name: 'AppHeader',
   props: {
     collapsed: {
       type: Boolean
@@ -15,14 +15,16 @@ const MyHeader = defineComponent({
   emits: ['update:collapsed'],
   setup(props, { emit }) {
     return () => (
-      <Layout.Header class={styles.layoutHeader}>
+      <Layout.Header class={styles.appHeader}>
         <div className={styles.leftOptions}>
           <span onClick={() => emit('update:collapsed', !props.collapsed)} className={styles.menuFold}>
             {props.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </span>
           <Breadcrumb />
         </div>
-        <Avatar />
+        <div className={styles.rightOptions}>
+          <Avatar />
+        </div>
       </Layout.Header>
     )
   }

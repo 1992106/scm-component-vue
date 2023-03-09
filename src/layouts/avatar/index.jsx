@@ -3,16 +3,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Menu, Dropdown, Avatar, Modal, notification, Button, Space } from 'ant-design-vue'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import XDownloads from '@components/Downloads'
 import setting from '@src/config'
 import styles from './index.module.scss'
 
 const MyAvatar = defineComponent({
-  name: 'MyAvatar',
+  name: 'AppAvatar',
   setup() {
-    const store = useStore()
     const router = useRouter()
-    const route = useRoute()
+    const currentRoute = useRoute()
+    const store = useStore()
 
     const userInfo = computed(() => store.state.user.userInfo)
 
@@ -37,7 +36,7 @@ const MyAvatar = defineComponent({
 
     const handleLogin = async () => {
       await store.dispatch('user/logout')
-      await router.push(`/login?redirect=${route.path}`)
+      await router.push(`/login?redirect=${currentRoute.fullPath}`)
     }
 
     const MenuOverlay = (
@@ -46,16 +45,10 @@ const MyAvatar = defineComponent({
       </Menu>
     )
 
-    const visible = computed({
-      get: () => store.getters['user/visible'],
-      set: visible => store.commit('user/setVisible', visible)
-    })
-
     return () => (
       <>
         {userInfo.value?.name ? (
           <Space>
-            <XDownloads v-model:visible={visible.value} />
             <Dropdown overlay={MenuOverlay} class={styles.userDropdown}>
               <div>
                 <Avatar size={28} src={`https://api.multiavatar.com/${userInfo.value.name}.png`} />

@@ -4,18 +4,18 @@ import setting from '@src/config'
 import styles from './index.module.scss'
 
 const { title } = setting
-const version = '1.0.0'
 
 const MyFooter = defineComponent({
-  name: 'MyFooter',
+  name: 'AppFooter',
   setup() {
     return () => (
       <footer className={styles.appFooter}>
-        <div className='copyright'>
-          Copyright
-          <CopyrightOutlined />
-          {title} {new Date().getFullYear()}
-          <span className='version'>{version}</span>
+        <div className={styles.copyright}>
+          Copyright <CopyrightOutlined style={{ margin: '0 6px' }} />
+          <span style={{ marginRight: '6px' }}>
+            {title} - {new Date().getFullYear()}
+          </span>
+          Interfocus Inc. All rights reserved.
         </div>
       </footer>
     )

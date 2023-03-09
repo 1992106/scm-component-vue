@@ -1,5 +1,6 @@
 import { getAccessStorage, removeAccessStorage, setAccessStorage, isEmpty } from '@src/utils'
 import setting from '@src/config'
+import { getLogin } from '../utils'
 
 // 本地存储用户信息
 const localUserInfo = getAccessStorage(setting.user_name)
@@ -23,15 +24,18 @@ const user = {
   },
   actions: {
     async login({ commit }, { account, password }) {
-      const res = await { account, password }
-      const { token = '', user = {} } = res?.data || {}
-      if (isEmpty(token) || isEmpty(user)) {
-        return {}
+      const res = await getLogin({ account, password })
+      if (res.status === 200) {
+        const { token = '', user = {} } = res?.data || {}
+        if (isEmpty(token) || isEmpty(user)) {
+          return {}
+        }
+        commit('setUserInfo', user)
+        setAccessStorage(setting.token_name, token)
+        setAccessStorage(setting.user_name, JSON.stringify(user))
+        return res?.data
       }
-      commit('setUserInfo', user)
-      setAccessStorage(setting.token_name, token)
-      setAccessStorage(setting.user_name, JSON.stringify(user))
-      return res?.data
+      return null
     },
     logout({ commit }) {
       commit('setUserInfo', {})

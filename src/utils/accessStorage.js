@@ -2,16 +2,20 @@ import setting from '@src/config'
 
 const { token_name } = setting
 
-const getAccessStorage = () => {
-  return localStorage.getItem(token_name) || ''
+const getAccessStorage = (key = token_name) => {
+  return localStorage.getItem(key) || ''
 }
 
-const setAccessStorage = token => {
-  return localStorage.setItem(token_name, token)
+const setAccessStorage = (key = token_name, value) => {
+  return localStorage.setItem(key, value)
 }
 
-const removeAccessStorage = () => {
-  return localStorage.removeItem(token_name)
+const removeAccessStorage = (key = token_name) => {
+  return localStorage.removeItem(key)
 }
 
-export { getAccessStorage, setAccessStorage, removeAccessStorage }
+const getToken = () => {
+  return getAccessStorage()
+}
+
+export { getAccessStorage, setAccessStorage, removeAccessStorage, getToken }
