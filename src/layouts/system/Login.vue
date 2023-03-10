@@ -89,7 +89,7 @@ export default defineComponent({
           notification.success({ message: timeTxt(), description: `欢迎登录${setting.title}` })
           let redirect = currentRoute.query?.redirect
           if (!redirect || redirect.includes('/login')) {
-            redirect = '/index'
+            redirect = '/'
           }
           await router.push(redirect)
         }
