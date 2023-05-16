@@ -119,7 +119,7 @@ export default defineComponent({
             }
             // 如果首次加载时data的长度 === total，则说明已经到底了
             if (state.total > 0 && state.data.length === state.total) {
-              state.status = 'end'
+              state.status = 'finished'
             }
           },
           fail: () => {
@@ -153,10 +153,10 @@ export default defineComponent({
           const total = data?.total || 0
           // 如果触底时，list的长度为0，则说明已经到底了
           if (list.length === 0) {
-            state.status = 'end'
+            state.status = 'finished'
           } else {
             state.data.push(...list)
-            state.status = 'done'
+            state.status = ''
           }
           // 如果首次加载的total < 触底加载更多的total时，则说明有新数据
           if (state.total < total) {

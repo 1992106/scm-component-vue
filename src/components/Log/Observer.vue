@@ -1,14 +1,14 @@
 <template>
-  <div ref="target" class="observer">{{ statusText[status] }}</div>
+  <div ref="targetEl" class="observer" @click="handleClick">{{ statusText[status] || '' }}</div>
 </template>
 <script>
-import { ref, onMounted, onBeforeUnmount, defineComponent } from 'vue'
+import { onMounted, onUnmounted, defineComponent, ref } from 'vue'
 export default defineComponent({
   props: {
     status: {
       type: String,
       validator(value) {
-        return ['done', 'error', 'loading', 'end'].includes(value)
+        return ['', 'loading', 'finished', 'error'].includes(value)
       },
       required: true,
       default: ''
@@ -16,41 +16,56 @@ export default defineComponent({
     statusText: {
       type: Object,
       default: () => ({
-        done: '',
-        error: '加载失败',
         loading: '加载中...',
-        end: '—— 到底了 ——'
+        finished: '—— 到底了 ——',
+        error: '加载失败'
       })
     },
-    options: {
-      type: Object,
-      default: () => ({})
+    rootMargin: {
+      type: String,
+      default: '0px 0px 30px 0px'
     }
   },
-  emits: ['intersect'],
+  emits: ['intersect', 'update:status'],
   setup(props, { emit }) {
     let observer = null
-    const target = ref(null)
+    const targetEl = ref(null)
+
+    const handleClick = () => {
+      if (props.status === 'error') {
+        emit('update:status', 'loading')
+        emit('intersect')
+      }
+    }
+
     onMounted(() => {
       // 构建观察器
-      observer = new IntersectionObserver(([entry]) => {
-        // 目标元素与根元素相交
-        if (entry && entry.isIntersecting && props.status !== 'end') {
-          emit('intersect')
-        }
-      }, props.options)
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (['loading', 'finished', 'error'].includes(props.status)) {
+            return
+          }
+          // 目标元素与根元素相交
+          if (entry && entry.isIntersecting) {
+            emit('update:status', 'loading')
+            emit('intersect')
+          }
+        },
+        { rootMargin: props.rootMargin }
+      )
 
       // 观察目标元素
-      observer.observe(target.value)
+      observer.observe(targetEl.value)
     })
 
     // 组件销毁前停止监听
-    onBeforeUnmount(() => {
+    onUnmounted(() => {
       observer.disconnect()
     })
 
     return {
-      target
+      targetEl,
+      handleClick
     }
   }
 })
