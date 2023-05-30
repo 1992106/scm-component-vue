@@ -14,7 +14,7 @@ export const jsPDF = ({ el, fileName, direction, mode, callback }) => {
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop // 获取滚动轴滚动的长度
   let opts = {
     scale: window.devicePixelRatio * 3,
-    allowTaint: true,
+    useCORS: true,
     backgroundColor: '#FFF',
     scrollY: -scrollTop,
     scrollX: 0

@@ -31,7 +31,7 @@
                   :key="file?.id || index"
                   type="link"
                   @click="handleDownload(file)">
-                  {{ file?.fileName }}
+                  {{ file?.fileName || '查看' }}
                 </a-button>
               </a-space>
             </template>
@@ -65,7 +65,7 @@ import { reactive, toRefs, defineComponent, watchEffect, watch, computed } from 
 import { Button, Form, FormItem, Space, Textarea } from 'ant-design-vue'
 import { XModal, XTable, XUpload, XImage } from 'scm-ui-vue'
 import { isFunction } from 'lodash-es'
-import { formatTime, isEmpty, download, execRequest } from '@src/utils'
+import { formatTime, isEmpty, execRequest } from '@src/utils'
 export default defineComponent({
   name: 'XRemark',
   components: {
@@ -233,7 +233,9 @@ export default defineComponent({
 
     const handleDownload = row => {
       const { url, fileName } = row || {}
-      download(url, fileName)
+      if (url) {
+        window.open(url)
+      }
     }
 
     // 是否有上传中的文件
