@@ -34,3 +34,42 @@ export const cleanDisabled = column => {
     return column
   }
 }
+
+const getType = file => file?.type || file?.mimeType || file?.mimetype
+
+const getName = file => file?.name || file?.fileName || file?.filename
+
+const hasImageByType = type => {
+  // 排除特殊图片格式：rgb/pcx/psd/dwg/mdi/pgm/cmx
+  return (
+    type?.includes('image/') &&
+    ![
+      'image/x-pcx',
+      'image/x-rgb',
+      'image/vnd.adobe.photoshop',
+      'image/vnd.dwg',
+      'image/vnd.ms-modi',
+      'image/x-portable-graymap',
+      'image/x-cmx'
+    ].includes(type)
+  )
+}
+
+const hasImageByName = name => {
+  if (name) {
+    const suffix = /\.([0-9a-zA-Z]+)$/i.exec(name)?.[1]
+    return ['png', 'jpg', 'jpeg', 'ico', 'gif', 'bmp', 'webp'].includes(suffix)
+  }
+}
+
+const hasImageByUrl = url => {
+  if (url) {
+    return /^.+(\.png|\.jpg|\.jpeg|\.ico|\.gif|\.bmp|\.webp)$/.test(url)
+  }
+}
+
+export const hasImage = file => {
+  const type = getType(file)
+  const name = getName(file)
+  return hasImageByType(type) || hasImageByName(name) || hasImageByUrl(file?.url)
+}

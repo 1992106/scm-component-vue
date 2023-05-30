@@ -31,7 +31,7 @@
                   :key="file?.id || index"
                   type="link"
                   @click="handleDownload(file)">
-                  {{ file?.fileName || '查看' }}
+                  {{ file?.name || file?.fileName || file?.filename || '查看' }}
                 </a-button>
               </a-space>
             </template>
@@ -65,7 +65,8 @@ import { reactive, toRefs, defineComponent, watchEffect, watch, computed } from 
 import { Button, Form, FormItem, Space, Textarea } from 'ant-design-vue'
 import { XModal, XTable, XUpload, XImage } from 'scm-ui-vue'
 import { isFunction } from 'lodash-es'
-import { formatTime, isEmpty, execRequest } from '@src/utils'
+import { formatTime, isEmpty, execRequest, download } from '@src/utils'
+import { hasImage } from '@components/utils'
 export default defineComponent({
   name: 'XRemark',
   components: {
@@ -147,23 +148,6 @@ export default defineComponent({
       total: 0
     })
 
-    const hasImage = file => {
-      const type = file?.type || file?.mimeType
-      // 排除特殊图片格式：rgb/pcx/psd/dwg/mdi/pgm/cmx
-      return (
-        type?.includes('image/') &&
-        ![
-          'image/x-pcx',
-          'image/x-rgb',
-          'image/vnd.adobe.photoshop',
-          'image/vnd.dwg',
-          'image/vnd.ms-modi',
-          'image/x-portable-graymap',
-          'image/x-cmx'
-        ].includes(type)
-      )
-    }
-
     const getFiles = row => {
       const files = row?.files || row?.fileList || row?.images || row?.imageList || row?.resources || row?.attachments
       return isEmpty(files) ? [] : Array.isArray(files) ? files : [files]
@@ -231,11 +215,8 @@ export default defineComponent({
       { immediate: true }
     )
 
-    const handleDownload = row => {
-      const { url, fileName } = row || {}
-      if (url) {
-        window.open(url)
-      }
+    const handleDownload = file => {
+      download(file?.url || file?.thumbUrl, file?.name || file?.fileName || file?.filename)
     }
 
     // 是否有上传中的文件
