@@ -57,14 +57,14 @@ const hasImageByType = type => {
 
 const hasImageByName = name => {
   if (name) {
-    const suffix = /\.([0-9a-zA-Z]+)$/i.exec(name)?.[1]
+    const suffix = /\.([0-9a-zA-Z]+)$/i.exec(name)?.[1]?.toLowerCase()
     return ['png', 'jpg', 'jpeg', 'ico', 'gif', 'bmp', 'webp'].includes(suffix)
   }
 }
 
 const hasImageByUrl = url => {
   if (url) {
-    return /^.+(\.png|\.jpg|\.jpeg|\.ico|\.gif|\.bmp|\.webp)$/.test(url)
+    return /^.+(\.png|\.jpg|\.jpeg|\.ico|\.gif|\.bmp|\.webp)$/i.test(url)
   }
 }
 
