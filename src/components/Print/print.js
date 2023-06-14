@@ -32,7 +32,7 @@ const createIframe = op => {
   const contentWindow = iframe.contentWindow
   // 插入head中的link stylesheet
   if (importCss) {
-    const stylesheets = document.querySelectorAll("link[rel = 'stylesheet']")
+    const stylesheets = document.querySelectorAll("link[rel='stylesheet']")
     stylesheets.forEach(item => {
       head.appendChild(item.cloneNode(true))
     })
@@ -76,7 +76,7 @@ const prinf = options => {
     }
     // 完成回调
     op.callback && op.callback()
-  }, 200)
+  }, op.delay)
 }
 
 export default prinf

@@ -45,7 +45,7 @@ export default defineComponent({
     // 打印标题
     title: { type: String, default: '' },
     // 延迟时间
-    delay: { type: Number, default: 1000 },
+    delay: { type: Number, default: 2000 },
     // 打印前的回调
     onBefore: { type: Function, default: null }
   },
@@ -80,9 +80,10 @@ export default defineComponent({
         print({
           el: elPrint.value,
           title: props.title,
+          delay: props.delay,
           callback: handleDone
         })
-      }, props.delay)
+      }, 200)
     }
 
     // 提供外部使用
