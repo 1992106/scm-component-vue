@@ -7,7 +7,7 @@
     :width="width"
     :spin-props="spinning"
     :confirm-loading="confirmLoading"
-    :okButtonProps="{ disabled: hasUploading }"
+    :ok-button-props="{ disabled: hasUploading }"
     destroy-on-close
     @ok="handleOk"
     @cancel="handleCancel">

@@ -4,13 +4,13 @@ import { download, execRequest } from '@src/utils'
 /**
  * 导入文件
  * @param fn
- * @param option
+ * @param file
  * @param ok
  * @returns {Promise<void>}
  */
-export const importFile = async (fn, option = {}, ok) => {
+export const importFile = async (fn, file, ok) => {
   const formData = new FormData()
-  formData.append('file', option.file)
+  formData.append('file', file)
   await execRequest(fn(formData, { $msg: 'none', $errorMsg: 'none' }), {
     success: ({ data, msg } = {}) => {
       Modal.success({
