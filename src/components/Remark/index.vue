@@ -7,7 +7,6 @@
     :width="width"
     :spin-props="spinning"
     :confirm-loading="confirmLoading"
-    :ok-button-props="{ disabled: hasUploading }"
     destroy-on-close
     @ok="handleOk"
     @cancel="handleCancel">
@@ -41,7 +40,7 @@
       </template>
     </x-table>
     <a-form :label-col="{ span: 0 }">
-      <a-form-item v-bind="validateInfos.content">
+      <a-form-item v-bind="validateInfos['content']">
         <a-textarea
           v-model:value="modelRef.content"
           placeholder="请输入备注"
@@ -51,7 +50,7 @@
       </a-form-item>
       <a-form-item>
         <x-upload
-          v-model:file-list="modelRef.files"
+          v-model:file-list="modelRef.fileList"
           :customRequest="customUpload"
           :accept="accept"
           :size="size"
@@ -61,7 +60,7 @@
   </x-modal>
 </template>
 <script>
-import { reactive, toRefs, defineComponent, watchEffect, watch, computed } from 'vue'
+import { reactive, toRefs, defineComponent, watchEffect, watch } from 'vue'
 import { Button, Form, FormItem, Space, Textarea } from 'ant-design-vue'
 import { XModal, XTable, XUpload, XImage } from 'scm-ui-vue'
 import { isFunction } from 'lodash-es'
@@ -219,14 +218,9 @@ export default defineComponent({
       download(file?.url || file?.thumbUrl, file?.name || file?.fileName || file?.filename)
     }
 
-    // 是否有上传中的文件
-    const hasUploading = computed(() => {
-      return modelRef.files.some(val => val.status === 'uploading')
-    })
-
     const modelRef = reactive({
       content: '',
-      files: []
+      fileList: []
     })
 
     const rulesRef = reactive({
@@ -241,10 +235,11 @@ export default defineComponent({
       validate()
         .then(async () => {
           state.confirmLoading = true
-          const files = modelRef.files.filter(val => val.status === 'done')
+          const { content, fileList } = modelRef
+          const files = fileList.filter(val => val.status === 'done')
           await execRequest(
             customSubmit({
-              content: modelRef.content,
+              content,
               ...(!isEmpty(files) ? { ids: files.map(val => val?.uid) } : {})
             }),
             {
@@ -276,10 +271,9 @@ export default defineComponent({
       ...toRefs(state),
       tableOptions,
       handleRequest,
-      handleDownload,
       validateInfos,
       modelRef,
-      hasUploading,
+      handleDownload,
       handleOk,
       handleCancel
     }

@@ -7,15 +7,12 @@
     :width="width"
     :spin-props="spinning"
     :confirm-loading="confirmLoading"
-    :ok-button-props="{ disabled: hasUploading }"
-    :footer="customImport ? null : undefined"
     destroy-on-close
     @ok="handleOk"
     @cancel="handleCancel">
     <div>
-      一、请按照数据模式的格式准备导入数据，模版中的表头名称不可更改及删除，每次限制导入
-      {{ limit }}
-      行。
+      一、请按照数据模式的格式准备导入数据，模版中的表头名称不可更改及删除。
+      <span v-if="limit">每次限制导入 {{ limit }} 行。</span>
       <span v-if="extra" class="color-error">{{ extra }}</span>
       <br />
       <slot>
@@ -24,29 +21,50 @@
     </div>
     <div style="margin-top: 20px">
       <p style="margin-bottom: 10px">二、将准备好的数据导入</p>
-      <x-upload
-        v-model:fileList="files"
-        class="import-template"
-        accept=".csv,.xls,.xlsx"
-        :maxCount="1"
-        :list-type="listType"
-        :show-upload-list="showUploadList"
-        :custom-request="customRequest">
-        <template v-if="customImport">
-          <UploadOutlined />
-          选择导入文件
-        </template>
-        <a-button v-else>
-          <UploadOutlined />
-          选择导入文件
-        </a-button>
-      </x-upload>
+      <a-form :label-col="{ span: 0 }">
+        <a-form-item v-bind="validateInfos['fileList']">
+          <template v-if="customImport">
+            <a-upload
+              :file-list="modelRef.fileList"
+              accept=".csv,.xls,.xlsx"
+              :before-upload="beforeUpload"
+              @remove="handleRemove">
+              <a-button>
+                <UploadOutlined />
+                选择导入的文件
+              </a-button>
+            </a-upload>
+          </template>
+          <template v-else>
+            <x-upload
+              v-model:file-list="modelRef.fileList"
+              accept=".csv,.xls,.xlsx"
+              list-type="text"
+              :maxCount="1"
+              :show-upload-list="{ showPreviewIcon: false, showRemoveIcon: true, showDownloadIcon: false }"
+              :custom-request="customUpload">
+              <a-button>
+                <UploadOutlined />
+                选择导入文件
+              </a-button>
+            </x-upload>
+          </template>
+        </a-form-item>
+        <a-form-item v-if="showTextarea">
+          <a-textarea
+            v-model:value="modelRef.content"
+            placeholder="请输入"
+            show-count
+            :rows="4"
+            :maxlength="maxlength" />
+        </a-form-item>
+      </a-form>
     </div>
   </x-modal>
 </template>
 <script>
-import { computed, defineComponent, reactive, toRefs, watchEffect } from 'vue'
-import { Button, Modal } from 'ant-design-vue'
+import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
+import { Button, Form, FormItem, message, Modal, Textarea, Upload } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { XModal, XUpload } from 'scm-ui-vue'
 import { importFile } from './import'
@@ -58,6 +76,10 @@ export default defineComponent({
     UploadOutlined,
     'x-modal': XModal,
     'x-upload': XUpload,
+    'a-upload': Upload,
+    'a-form': Form,
+    'a-form-item': FormItem,
+    'a-textarea': Textarea,
     'a-button': Button,
     // eslint-disable-next-line vue/no-unused-components
     Modal
@@ -72,7 +94,9 @@ export default defineComponent({
     customUpload: { type: Function },
     customDownload: { type: Function },
     limit: { type: Number, default: 500 },
-    extra: { type: String }
+    extra: { type: String },
+    showTextarea: { type: Boolean, default: false },
+    maxlength: { type: Number, default: 200 }
   },
   emits: ['update:visible', 'done'],
   setup(props, { emit, expose }) {
@@ -80,8 +104,7 @@ export default defineComponent({
       modalVisible: props.visible,
       spinning: false,
       downloadLoading: false,
-      confirmLoading: false,
-      files: []
+      confirmLoading: false
     })
 
     watchEffect(() => {
@@ -89,10 +112,12 @@ export default defineComponent({
       state.modalVisible = props.visible
     })
 
+    // 下载模板
     const handleDownload = async () => {
       const { customDownload } = props
       if (!isFunction(customDownload)) return
       state.downloadLoading = true
+      message.info('正在下载中...')
       await execRequest(customDownload(), {
         success: ({ data }) => {
           if (data) {
@@ -103,45 +128,47 @@ export default defineComponent({
       state.downloadLoading = false
     }
 
-    const listType = computed(() => (props.customImport ? 'picture-card' : 'text'))
-    const showUploadList = computed(() => {
-      return props.customImport ? false : { showPreviewIcon: false, showRemoveIcon: true, showDownloadIcon: true }
-    })
-
-    // 是否有上传中的文件
-    const hasUploading = computed(() => {
-      return props.customImport ? false : state.files.some(val => val.status === 'uploading')
-    })
-    const customRequest = async file => {
-      const { customImport, customUpload } = props
-      if (customImport) {
-        state.files = [] // 清空文件列表
-        return await handleImport(file).then(() => ({ data: {} }))
-      } else if (customUpload) {
-        return await customUpload(file)
-      }
+    const beforeUpload = async file => {
+      modelRef.fileList = [file]
+      return false
     }
 
-    const handleImport = async file => {
-      const { customImport } = props
+    const handleRemove = () => {
+      modelRef.fileList = []
+    }
+
+    const modelRef = reactive({
+      fileList: [],
+      content: ''
+    })
+
+    const rulesRef = reactive({
+      content: [{ required: true, message: '请输入备注' }]
+    })
+
+    const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
+
+    const handleImport = async () => {
+      const { customImport, showTextarea } = props
       if (!isFunction(customImport)) return
-      state.spinning = true
-      await importFile(customImport, file, data => {
+      const { content, fileList } = modelRef
+      await importFile(customImport, { file: fileList[0], ...(showTextarea ? { content } : {}) }, data => {
         emit('done', data)
         // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
         state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
         handleCancel()
       })
-      state.spinning = false
     }
 
-    const handleOk = async () => {
-      const { customSubmit } = props
+    const handleSubmit = async () => {
+      const { customSubmit, showTextarea } = props
       if (!isFunction(customSubmit)) return
-      state.confirmLoading = true
+      const { content, fileList } = modelRef
+      const files = fileList.filter(val => val.status === 'done')
       await execRequest(
         customSubmit({
-          ...(!isEmpty(state.files) ? { id: state.files?.[0]?.uid } : {})
+          ...(!isEmpty(files) ? { id: files?.[0]?.uid } : {}),
+          ...(showTextarea ? { content } : {})
         }),
         {
           success: ({ data }) => {
@@ -152,10 +179,26 @@ export default defineComponent({
           }
         }
       )
-      state.confirmLoading = false
+    }
+
+    const handleOk = async () => {
+      validate()
+        .then(async () => {
+          state.confirmLoading = true
+          if (props.customImport) {
+            await handleImport()
+          } else if (props.customSubmit) {
+            await handleSubmit()
+          }
+          state.confirmLoading = false
+        })
+        .catch(err => {
+          console.error('import error', err)
+        })
     }
 
     const handleCancel = () => {
+      resetFields()
       emit('update:visible', false)
     }
 
@@ -163,11 +206,10 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
-      listType,
-      showUploadList,
-      hasUploading,
-      customRequest,
-      handleImport,
+      beforeUpload,
+      handleRemove,
+      validateInfos,
+      modelRef,
       handleDownload,
       handleOk,
       handleCancel
@@ -175,11 +217,3 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
-.x-import__dialog {
-  :global(.import-template .ant-upload.ant-upload-select-picture-card) {
-    width: 120px;
-    height: 120px;
-  }
-}
-</style>
