@@ -143,7 +143,7 @@ export default defineComponent({
     })
 
     const rulesRef = reactive({
-      content: [{ required: true, message: '请输入备注' }]
+      fileList: [{ required: true, type: 'array', message: '请上传文件' }]
     })
 
     const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
