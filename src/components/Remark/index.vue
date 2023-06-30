@@ -44,7 +44,7 @@
         <a-textarea
           v-model:value="modelRef.content"
           placeholder="请输入备注"
-          show-count
+          :show-count="true"
           :rows="4"
           :maxlength="maxlength" />
       </a-form-item>
@@ -271,8 +271,8 @@ export default defineComponent({
       ...toRefs(state),
       tableOptions,
       handleRequest,
-      validateInfos,
       modelRef,
+      validateInfos,
       handleDownload,
       handleOk,
       handleCancel

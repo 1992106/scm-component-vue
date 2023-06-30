@@ -97,11 +97,15 @@ export default ({ mode }) => {
           dayjs: 'dayjs',
           'lodash-es': 'lodash-es',
           'scm-ui-vue': 'scm-ui-vue',
+          'echarts/core': 'echarts/core',
+          'echarts/charts': 'echarts/charts',
+          'echarts/renderers': 'echarts/renderers',
+          'echarts/components': 'echarts/components',
+          'echarts/features': 'echarts/features',
           '@vueup/vue-quill': '@vueup/vue-quill',
-          echarts: 'echarts',
+          jspdf: 'jspdf',
           html2canvas: 'html2canvas',
           jsbarcode: 'jsbarcode',
-          jspdf: 'jspdf',
           'qrcodejs2-fix': 'qrcodejs2-fix'
         }
       },
@@ -115,7 +119,14 @@ export default ({ mode }) => {
         'vxe-table',
         'dayjs',
         'lodash-es',
-        'scm-ui-vue'
+        'scm-ui-vue',
+        'echarts/core',
+        'echarts/charts',
+        'echarts/renderers',
+        'echarts/components',
+        'echarts/features',
+        'jspdf',
+        'html2canvas'
       ]
     }
   }

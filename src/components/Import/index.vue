@@ -22,6 +22,9 @@
     <div style="margin-top: 20px">
       <p style="margin-bottom: 10px">二、将准备好的数据导入</p>
       <a-form :label-col="{ span: 0 }">
+        <a-form-item v-if="showInput">
+          <a-input v-model:value="modelRef.name" placeholder="清输入名称" />
+        </a-form-item>
         <a-form-item v-bind="validateInfos['fileList']">
           <template v-if="customImport">
             <a-upload
@@ -53,8 +56,8 @@
         <a-form-item v-if="showTextarea">
           <a-textarea
             v-model:value="modelRef.content"
-            placeholder="请输入"
-            show-count
+            placeholder="清输入备注"
+            :show-count="true"
             :rows="4"
             :maxlength="maxlength" />
         </a-form-item>
@@ -64,7 +67,7 @@
 </template>
 <script>
 import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
-import { Button, Form, FormItem, message, Modal, Textarea, Upload } from 'ant-design-vue'
+import { Button, Form, FormItem, Input, message, Modal, Textarea, Upload } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { XModal, XUpload } from 'scm-ui-vue'
 import { importFile } from './import'
@@ -79,6 +82,7 @@ export default defineComponent({
     'a-upload': Upload,
     'a-form': Form,
     'a-form-item': FormItem,
+    'a-input': Input,
     'a-textarea': Textarea,
     'a-button': Button,
     // eslint-disable-next-line vue/no-unused-components
@@ -89,12 +93,13 @@ export default defineComponent({
     title: { type: String, default: '导入数据' },
     width: { type: Number, default: 520 },
     visible: { type: Boolean, default: false },
-    customImport: { type: Function },
-    customSubmit: { type: Function },
+    customImport: { type: Function }, // 直接把文件传给后端解析
+    customSubmit: { type: Function }, // 先上传文件到s3，再把key传给后端
     customUpload: { type: Function },
     customDownload: { type: Function },
     limit: { type: Number, default: 500 },
     extra: { type: String },
+    showInput: { type: Boolean, default: false },
     showTextarea: { type: Boolean, default: false },
     maxlength: { type: Number, default: 200 }
   },
@@ -139,6 +144,7 @@ export default defineComponent({
 
     const modelRef = reactive({
       fileList: [],
+      name: '',
       content: ''
     })
 
@@ -149,25 +155,30 @@ export default defineComponent({
     const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
     const handleImport = async () => {
-      const { customImport, showTextarea } = props
+      const { customImport, showInput, showTextarea } = props
       if (!isFunction(customImport)) return
-      const { content, fileList } = modelRef
-      await importFile(customImport, { file: fileList[0], ...(showTextarea ? { content } : {}) }, data => {
-        emit('done', data)
-        // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-        state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
-        handleCancel()
-      })
+      const { name, content, fileList } = modelRef
+      await importFile(
+        customImport,
+        { file: fileList[0], ...(showInput ? { name } : {}), ...(showTextarea ? { content } : {}) },
+        data => {
+          emit('done', data)
+          // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
+          state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
+          handleCancel()
+        }
+      )
     }
 
     const handleSubmit = async () => {
-      const { customSubmit, showTextarea } = props
+      const { customSubmit, showInput, showTextarea } = props
       if (!isFunction(customSubmit)) return
-      const { content, fileList } = modelRef
+      const { name, content, fileList } = modelRef
       const files = fileList.filter(val => val.status === 'done')
       await execRequest(
         customSubmit({
           ...(!isEmpty(files) ? { id: files?.[0]?.uid } : {}),
+          ...(showInput ? { name } : {}),
           ...(showTextarea ? { content } : {})
         }),
         {
@@ -208,8 +219,8 @@ export default defineComponent({
       ...toRefs(state),
       beforeUpload,
       handleRemove,
-      validateInfos,
       modelRef,
+      validateInfos,
       handleDownload,
       handleOk,
       handleCancel
