@@ -125,6 +125,7 @@ export default ({ mode }) => {
         'echarts/renderers',
         'echarts/components',
         'echarts/features',
+        '@vueup/vue-quill',
         'jspdf',
         'html2canvas'
       ]
