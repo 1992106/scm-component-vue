@@ -23,7 +23,7 @@
       <p style="margin-bottom: 10px">二、将准备好的数据导入</p>
       <a-form :label-col="{ span: 0 }">
         <a-form-item v-if="showInput">
-          <a-input v-model:value="modelRef.name" placeholder="清输入名称" />
+          <a-input v-model:value="modelRef.name" placeholder="请输入名称" />
         </a-form-item>
         <a-form-item v-bind="validateInfos['fileList']">
           <template v-if="customImport">
@@ -56,7 +56,7 @@
         <a-form-item v-if="showTextarea">
           <a-textarea
             v-model:value="modelRef.content"
-            placeholder="清输入备注"
+            placeholder="请输入备注"
             :show-count="true"
             :rows="4"
             :maxlength="maxlength" />
