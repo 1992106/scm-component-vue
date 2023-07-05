@@ -21,13 +21,13 @@ export const importFile = async (fn, option = {}, ok) => {
         onOk: () => ok(data)
       })
     },
-    fail: err => {
+    fail: ({ data, msg } = {}) => {
       Modal.error({
         title: '导入失败',
         content: (
           <div>
-            <p>{err?.msg}</p>
-            {err?.data && <a onClick={() => download(err?.data || err?.data?.url)}>下载失败文件</a>}
+            <p>{msg || '请删除文件，再重新上传'}</p>
+            {data && <a onClick={() => download(data || data?.url)}>下载失败文件</a>}
           </div>
         )
       })

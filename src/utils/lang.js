@@ -208,16 +208,22 @@ export const execRequest = async (result, { success, fail } = {}) => {
   try {
     const value = await result
     // 有返回值，且长度是2的数组
-    if (
-      Array.isArray(value) &&
-      value.length === 2 &&
-      ((value[0] == null && !isEmpty(value[1])) || (!isEmpty(value[0]) && value[1] == null))
-    ) {
-      const [err, data = {}] = value
-      if (!err) {
-        success?.(data)
+    if (Array.isArray(value) && value.length === 2) {
+      if ((value[0] == null && !isEmpty(value[1])) || (!isEmpty(value[0]) && value[1] == null)) {
+        const [err, data = {}] = value
+        if (!err) {
+          success?.(data)
+        } else {
+          fail?.(err)
+        }
       } else {
-        fail?.(err)
+        // [error, data]
+        if (!isEmpty(value[0])) {
+          fail?.()
+        } else {
+          // [undefined, undefined]
+          success?.({})
+        }
       }
     } else {
       // 1.有返回值
