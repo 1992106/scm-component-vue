@@ -236,7 +236,7 @@ export default defineComponent({
         .then(async () => {
           state.confirmLoading = true
           const { content, fileList } = modelRef
-          const files = fileList.filter(val => val.status === 'done')
+          const files = fileList.filter(val => val?.status === 'done')
           await execRequest(
             customSubmit({
               content,
@@ -246,7 +246,7 @@ export default defineComponent({
               success: ({ data }) => {
                 emit('done', data)
                 // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-                state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
+                // state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
                 handleCancel()
               }
             }

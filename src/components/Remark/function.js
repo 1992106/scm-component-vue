@@ -1,6 +1,7 @@
 import XRemark from './index.vue'
-import { produce } from '@src/plugins/produce'
+import { useComponent } from 'scm-ui-vue'
 
 export const createXRemark = (options, fn) => {
-  produce(XRemark, { visible: true, onDone: fn }, options)
+  const produce = useComponent(XRemark)
+  return produce({ ...options, ...(fn ? { onDone: fn } : {}) })
 }

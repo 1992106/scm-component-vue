@@ -1,6 +1,7 @@
 import XLog from './index.vue'
-import { produce } from '@src/plugins/produce'
+import { useComponent } from 'scm-ui-vue'
 
 export const createXLog = (options, fn) => {
-  produce(XLog, { visible: true, onDone: fn }, options)
+  const produce = useComponent(XLog)
+  return produce({ ...options, ...(fn ? { onDone: fn } : {}) })
 }

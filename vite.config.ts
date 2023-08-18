@@ -2,8 +2,6 @@ import { UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import legacy from '@vitejs/plugin-legacy'
-// import Components from 'unplugin-vue-components/vite'
-// import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import viteHtml from 'vite-plugin-html'
 import { resolve } from 'path'
 import setting from './src/config'
@@ -14,13 +12,6 @@ const config: UserConfigExport = {
   plugins: [
     vue(),
     vueJsx({}),
-    // Components({
-    //   resolvers: [
-    //     AntDesignVueResolver(),
-    //   ],
-    //   dts: true,
-    //   include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-    // }),
     viteHtml({
       minify: true,
       inject: {

@@ -100,7 +100,9 @@ export default defineComponent({
     limit: { type: Number, default: 500 },
     extra: { type: String },
     showInput: { type: Boolean, default: false },
+    inputRequired: { type: Boolean, default: false },
     showTextarea: { type: Boolean, default: false },
+    textareaRequired: { type: Boolean, default: false },
     maxlength: { type: Number, default: 200 }
   },
   emits: ['update:visible', 'done'],
@@ -149,7 +151,9 @@ export default defineComponent({
     })
 
     const rulesRef = reactive({
-      fileList: [{ required: true, type: 'array', message: '请上传文件' }]
+      fileList: [{ required: true, type: 'array', message: '请上传文件' }],
+      ...(props.showInput ? { name: [{ required: props.inputRequired, message: '请输入名称' }] } : {}),
+      ...(props.showTextarea ? { content: [{ required: props.textareaRequired, message: '请输入备注' }] } : {})
     })
 
     const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
@@ -164,7 +168,7 @@ export default defineComponent({
         data => {
           emit('done', data)
           // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-          state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
+          // state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
           handleCancel()
         }
       )
@@ -174,7 +178,7 @@ export default defineComponent({
       const { customSubmit, showInput, showTextarea } = props
       if (!isFunction(customSubmit)) return
       const { name, content, fileList } = modelRef
-      const files = fileList.filter(val => val.status === 'done')
+      const files = fileList.filter(val => val?.status === 'done')
       await execRequest(
         customSubmit({
           ...(!isEmpty(files) ? { id: files?.[0]?.uid } : {}),
@@ -185,7 +189,7 @@ export default defineComponent({
           success: ({ data }) => {
             emit('done', data)
             // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-            state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
+            // state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
             handleCancel()
           }
         }

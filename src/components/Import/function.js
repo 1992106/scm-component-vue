@@ -1,6 +1,7 @@
 import XImport from './index.vue'
-import { produce } from '@src/plugins/produce'
+import { useComponent } from 'scm-ui-vue'
 
 export const createXImport = (options, fn) => {
-  produce(XImport, { visible: true, onDone: fn }, options)
+  const produce = useComponent(XImport)
+  return produce({ ...options, ...(fn ? { onDone: fn } : {}) })
 }
