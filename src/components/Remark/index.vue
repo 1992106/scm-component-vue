@@ -240,7 +240,7 @@ export default defineComponent({
           await execRequest(
             customSubmit({
               content,
-              ...(!isEmpty(files) ? { ids: files.map(val => val?.uid) } : {})
+              ...(!isEmpty(files) ? { ids: files.map(val => val?.uid), files } : {})
             }),
             {
               success: ({ data }) => {

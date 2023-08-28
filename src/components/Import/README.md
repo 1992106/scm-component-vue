@@ -27,9 +27,9 @@ emits: ['update:visible', 'done']
 ### Example
 
 ```vue
-<x-import v-model:visible="visible" :customImport="customImport" :customDownload="customDownload" @done="handleDone"></x-import>
+<x-import v-model:visible="visible" :customImport="customImport" :customDownload="customDownload"></x-import>
 
-<x-import v-model:visible="visible" :customImport="customImport" @done="handleDone">
+<x-import v-model:visible="visible" :customImport="customImport">
   <a-button @click="handleDownload"></a-button>
 </x-import>
 

@@ -22,23 +22,8 @@
     <div style="margin-top: 20px">
       <p style="margin-bottom: 10px">二、将准备好的数据导入</p>
       <a-form :label-col="{ span: 0 }">
-        <a-form-item v-if="showInput">
-          <a-input v-model:value="modelRef.name" placeholder="请输入名称" />
-        </a-form-item>
         <a-form-item v-bind="validateInfos['fileList']">
-          <template v-if="customImport">
-            <a-upload
-              :file-list="modelRef.fileList"
-              accept=".csv,.xls,.xlsx"
-              :before-upload="beforeUpload"
-              @remove="handleRemove">
-              <a-button>
-                <UploadOutlined />
-                选择导入的文件
-              </a-button>
-            </a-upload>
-          </template>
-          <template v-else>
+          <template v-if="customUpload">
             <x-upload
               v-model:file-list="modelRef.fileList"
               accept=".csv,.xls,.xlsx"
@@ -52,8 +37,23 @@
               </a-button>
             </x-upload>
           </template>
+          <template v-else>
+            <a-upload
+              :file-list="modelRef.fileList"
+              accept=".csv,.xls,.xlsx"
+              :before-upload="beforeUpload"
+              @remove="handleRemove">
+              <a-button>
+                <UploadOutlined />
+                选择导入的文件
+              </a-button>
+            </a-upload>
+          </template>
         </a-form-item>
-        <a-form-item v-if="showTextarea">
+        <a-form-item v-if="showInput" v-bind="validateInfos['name']">
+          <a-input v-model:value="modelRef.name" placeholder="请输入名称" />
+        </a-form-item>
+        <a-form-item v-if="showTextarea" v-bind="validateInfos['content']">
           <a-textarea
             v-model:value="modelRef.content"
             placeholder="请输入备注"
@@ -93,8 +93,7 @@ export default defineComponent({
     title: { type: String, default: '导入数据' },
     width: { type: Number, default: 520 },
     visible: { type: Boolean, default: false },
-    customImport: { type: Function }, // 直接把文件传给后端解析
-    customSubmit: { type: Function }, // 先上传文件到s3，再把key传给后端
+    customImport: { type: Function }, // 【后端导入】：1、直接把文件传给后端解析；2、先上传文件到s3，再把key传给后端
     customUpload: { type: Function },
     customDownload: { type: Function },
     limit: { type: Number, default: 500 },
@@ -105,7 +104,7 @@ export default defineComponent({
     textareaRequired: { type: Boolean, default: false },
     maxlength: { type: Number, default: 200 }
   },
-  emits: ['update:visible', 'done'],
+  emits: ['update:visible', 'success'],
   setup(props, { emit, expose }) {
     const state = reactive({
       modalVisible: props.visible,
@@ -158,54 +157,51 @@ export default defineComponent({
 
     const { resetFields, validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
+    // 后端导入
     const handleImport = async () => {
-      const { customImport, showInput, showTextarea } = props
+      const { customUpload, customImport, showInput, showTextarea } = props
       if (!isFunction(customImport)) return
       const { name, content, fileList } = modelRef
-      await importFile(
-        customImport,
-        { file: fileList[0], ...(showInput ? { name } : {}), ...(showTextarea ? { content } : {}) },
-        data => {
-          emit('done', data)
-          // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-          // state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
-          handleCancel()
-        }
-      )
-    }
-
-    const handleSubmit = async () => {
-      const { customSubmit, showInput, showTextarea } = props
-      if (!isFunction(customSubmit)) return
-      const { name, content, fileList } = modelRef
-      const files = fileList.filter(val => val?.status === 'done')
-      await execRequest(
-        customSubmit({
-          ...(!isEmpty(files) ? { id: files?.[0]?.uid } : {}),
-          ...(showInput ? { name } : {}),
-          ...(showTextarea ? { content } : {})
-        }),
-        {
-          success: ({ data }) => {
-            emit('done', data)
-            // TODO: 使用函数方法调用时，通过emit('update:visible', false)不生效，必须手动关闭
-            // state.modalVisible = false // 只是为了兼容使用函数方法调用，才需要手动关闭
+      state.confirmLoading = true
+      if (customUpload) {
+        // 先上传文件到s3，再把key传给后端
+        const file = fileList.filter(val => val?.status === 'done')[0]
+        await execRequest(
+          customImport({
+            ...(!isEmpty(file) ? { id: file?.uid, file } : {}),
+            ...(showInput ? { name } : {}),
+            ...(showTextarea ? { content } : {})
+          }),
+          {
+            success: ({ data }) => {
+              emit('success', data)
+              handleCancel()
+            }
+          }
+        )
+      } else {
+        // 直接把文件传给后端解析
+        const file = fileList[0]
+        await importFile(
+          customImport,
+          {
+            ...(file ? { file } : {}),
+            ...(showInput ? { name } : {}),
+            ...(showTextarea ? { content } : {})
+          },
+          data => {
+            emit('success', data)
             handleCancel()
           }
-        }
-      )
+        )
+      }
+      state.confirmLoading = false
     }
 
     const handleOk = async () => {
       validate()
-        .then(async () => {
-          state.confirmLoading = true
-          if (props.customImport) {
-            await handleImport()
-          } else if (props.customSubmit) {
-            await handleSubmit()
-          }
-          state.confirmLoading = false
+        .then(() => {
+          handleImport()
         })
         .catch(err => {
           console.error('import error', err)

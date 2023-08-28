@@ -15,9 +15,10 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { isFunction } from 'lodash-es'
 import { jsPDF } from './htmlToPdf'
-import { execRequest } from '@src/utils'
+import { execRequest, isEmpty } from '@src/utils'
 export default defineComponent({
   name: 'XExport',
   inheritAttrs: false,
@@ -35,8 +36,8 @@ export default defineComponent({
     // 导出文件类型
     fileType: {
       validator(value) {
-        // 支持pdf和excel导出
-        return ['pdf', 'excel'].includes(value)
+        // 支持pdf和word导出
+        return ['pdf', 'word'].includes(value)
       },
       default: 'pdf'
     },
@@ -66,6 +67,10 @@ export default defineComponent({
         execRequest(onBefore(), {
           success: ({ data }) => {
             result.value = data
+            if (isEmpty(data)) {
+              message.info('打印内容为空！')
+              return
+            }
             dispatch()
           }
         })
@@ -80,8 +85,8 @@ export default defineComponent({
         case 'pdf':
           exportPDF()
           break
-        case 'excel':
-          exportExcel()
+        case 'word':
+          exportWord()
           break
       }
     }
@@ -105,8 +110,8 @@ export default defineComponent({
       }, props.delay)
     }
 
-    // 导出excel
-    const exportExcel = () => {
+    // 导出word
+    const exportWord = () => {
       // TODO: 待实现
     }
 

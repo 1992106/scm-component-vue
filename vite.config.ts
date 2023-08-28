@@ -1,8 +1,8 @@
-import { UserConfigExport } from 'vite'
+import { type UserConfigExport } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import legacy from '@vitejs/plugin-legacy'
-import viteHtml from 'vite-plugin-html'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import { resolve } from 'path'
 import setting from './src/config'
 
@@ -12,10 +12,10 @@ const config: UserConfigExport = {
   plugins: [
     vue(),
     vueJsx({}),
-    viteHtml({
+    createHtmlPlugin({
       minify: true,
       inject: {
-        injectData: {
+        data: {
           title: setting.title
         }
       }
@@ -65,7 +65,7 @@ const config: UserConfigExport = {
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-  const { plugins = [], build = {} } = config
+  const { plugins = [], build = {} as any } = config
 
   if (mode === 'lib') {
     build.lib = {

@@ -2,7 +2,7 @@
 export { default as XBarcode } from './Barcode/index.vue'
 export { default as XQrcode } from './Qrcode/index.vue'
 export { default as XPrint } from './Print/index.vue'
-export { default as XImport } from './Import/index.vue'
+export { default as XImport } from './Import/index.vue' // 下个版本删除
 export { default as XExport } from './Export/index.vue'
 export { default as XLog } from './Log/index.vue'
 export { default as XRemark } from './Remark/index.vue'
