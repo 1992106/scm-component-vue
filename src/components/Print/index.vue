@@ -21,6 +21,7 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import XQrcode from '../Qrcode/index.vue'
 import XBarcode from '../Barcode/index.vue'
 import print from './print'
@@ -54,17 +55,19 @@ export default defineComponent({
     const elPrint = ref(null)
     const result = ref(null)
 
-    const handlePrint = () => {
+    const handlePrint = async () => {
       const { onBefore } = props
       if (onBefore) {
         // 有onBefore时
         if (!isFunction(onBefore)) return
-        execRequest(onBefore(), {
+        const hideMessage = message.loading('正在加载，请稍等...', 0)
+        await execRequest(onBefore(), {
           success: ({ data }) => {
             result.value = data
             printf()
           }
         })
+        hideMessage()
       } else {
         // 没有onBefore时，直接打印
         printf()

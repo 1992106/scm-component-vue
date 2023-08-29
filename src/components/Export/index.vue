@@ -15,8 +15,9 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
-import { isFunction } from 'lodash-es'
+import { message } from 'ant-design-vue'
 import { jsPDF } from './htmlToPdf'
+import { isFunction } from 'lodash-es'
 import { execRequest } from '@src/utils'
 export default defineComponent({
   name: 'XExport',
@@ -58,19 +59,21 @@ export default defineComponent({
     const elExport = ref(null)
     const result = ref(null)
 
-    const handleExport = () => {
+    const handleExport = async () => {
       const { onBefore } = props
       if (onBefore) {
         // 有onBefore时
         if (!isFunction(onBefore)) return
-        execRequest(onBefore(), {
+        const hideMessage = message.loading('正在加载，请稍等...', 0)
+        await execRequest(onBefore(), {
           success: ({ data }) => {
             result.value = data
             dispatch()
           }
         })
+        hideMessage()
       } else {
-        // 没有onBefore时，直接打印
+        // 没有onBefore时，直接导出
         dispatch()
       }
     }
