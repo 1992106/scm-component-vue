@@ -15,10 +15,9 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
-import { message } from 'ant-design-vue'
 import { isFunction } from 'lodash-es'
 import { jsPDF } from './htmlToPdf'
-import { execRequest, isEmpty } from '@src/utils'
+import { execRequest } from '@src/utils'
 export default defineComponent({
   name: 'XExport',
   inheritAttrs: false,
@@ -67,10 +66,6 @@ export default defineComponent({
         execRequest(onBefore(), {
           success: ({ data }) => {
             result.value = data
-            if (isEmpty(data)) {
-              message.info('打印内容为空！')
-              return
-            }
             dispatch()
           }
         })
