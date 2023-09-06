@@ -144,7 +144,7 @@ export default defineComponent({
     // 触底加载更多
     const handleReachBottomLoad = async () => {
       const { customRequest, showPagination } = props
-      if (!isFunction(customRequest) || showPagination) return
+      if (!isFunction(customRequest) || !showPagination) return
       const lastId = state.data[state.data.length - 1]?.id
       state.status = 'loading'
       await execRequest(customRequest({ lastId, pageSize: state.pageSize }), {

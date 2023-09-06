@@ -12,12 +12,13 @@ export { default as XEditor } from './Editor/index.vue'
 export { default as XDownloads } from './Downloads'
 export { default as XMaterials } from './Materials'
 export { default as XVersions } from './Versions'
-export {
-  default as XTraceability,
-  XBatchImportTraceability,
-  XBatchImportDetail,
-  XCopyTraceability,
-  XEditTraceability,
-  XAuditTraceability,
-  XViewTraceability
-} from './Traceability'
+// 下个版本删除
+// export {
+//   default as XTraceability,
+//   XBatchImportTraceability,
+//   XBatchImportDetail,
+//   XCopyTraceability,
+//   XEditTraceability,
+//   XAuditTraceability,
+//   XViewTraceability
+// } from './Traceability'

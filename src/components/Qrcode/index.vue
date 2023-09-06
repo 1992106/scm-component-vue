@@ -18,7 +18,7 @@ export default defineComponent({
   setup(props) {
     const elQrcode = ref(null)
 
-    const generateQRCode = () => {
+    const generateQrcode = () => {
       // 生成二维码先清空旧的
       if (elQrcode.value) {
         elQrcode.value.innerHTML = ''
@@ -37,7 +37,7 @@ export default defineComponent({
       () => props.code,
       text => {
         if (text) {
-          nextTick(generateQRCode)
+          nextTick(generateQrcode)
         }
       },
       {
@@ -46,7 +46,8 @@ export default defineComponent({
     )
 
     return {
-      elQrcode
+      elQrcode,
+      generateQrcode
     }
   }
 })

@@ -128,7 +128,6 @@ export default defineComponent({
 
     const state = reactive({
       spinning: false,
-      disabled: false,
       traceabilityList: []
     })
 

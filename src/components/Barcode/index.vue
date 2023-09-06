@@ -21,7 +21,7 @@ export default defineComponent({
   },
   setup(props) {
     const elBarcode = ref(null)
-    const getBarCode = () => {
+    const generateBarcode = () => {
       JsBarcode(elBarcode.value, props.code, {
         width: props.width,
         height: props.height,
@@ -34,7 +34,7 @@ export default defineComponent({
       () => props.code,
       code => {
         if (code) {
-          nextTick(getBarCode)
+          nextTick(generateBarcode)
         }
       },
       {
@@ -43,7 +43,7 @@ export default defineComponent({
     )
     return {
       elBarcode,
-      getBarCode
+      generateBarcode
     }
   }
 })
