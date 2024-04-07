@@ -61,8 +61,8 @@ export default defineComponent({
           height: props.height
         }
         xEcharts.value = markRaw(init(elEcharts.value, props.theme || null, opts))
-        xEcharts.value?.setOption(props.options)
       }
+      props.options && xEcharts.value.setOption(props.options)
     }
 
     watch(
